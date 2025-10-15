@@ -15,6 +15,7 @@ import Image from "next/image"
 import { FeaturedEventsSection } from "@/components/home/featured-events"
 import LiveEventsSection from "@/components/home/live-events"
 import { Button } from "@/components/ui/button"
+import { VenuesSection } from "@/components/home/venues-section"
 
 
 
@@ -245,8 +246,8 @@ export default function HomePage() {
               <Image src="/open-mic.webp" alt="Singing Contest Banner" fill priority className="object-cover" />
 
               {/* CTA */}
-              <div className="relative h-full flex items-end justify-end p-3 sm:p-4 md:p-6">
-                <Button className="bg-primary text-primary-foreground hover:bg-primary/90 border-2 md:border-4 border-border shadow-md md:shadow-2xl uppercase tracking-wider font-semibold md:font-bold px-4 py-2 sm:px-6 sm:py-3 md:px-8 md:py-4 text-sm sm:text-base md:text-lg transition-transform duration-300 hover:scale-[1.03] focus-visible:ring-2">
+              <div className="relative h-full flex items-end justify-end p-3 sm:p-4 md:p-4">
+                <Button className="bg-red-500 text-primary-foreground hover:bg-white border md:border-2 border-border shadow-md md:shadow-2xl uppercase md:font-normal px-4 py-3 sm:px-6 sm:py-3 md:px-4 rounded-xs hover:text-red-500 hover:border-red-500 cursor-pointer md:py-4 text-sm sm:text-base md:text-2xl tracking-tighter transition-transform duration-300 hover:scale-[1.03] focus-visible:ring-2">
                   Registration Open
                 </Button>
               </div>
@@ -266,7 +267,8 @@ export default function HomePage() {
         </section>
 
         {/* VENUES */}
-        <section className="container mx-auto px-4 py-6">
+        <VenuesSection/>
+        {/* <section className="container mx-auto px-4 py-6">
           <SectionHeader title="Venues" href="#" />
           <div className="mt-4">
             <HScroll>
@@ -285,7 +287,7 @@ export default function HomePage() {
               ))}
             </HScroll>
           </div>
-        </section>
+        </section> */}
       </div>
       <MobileBottomNav />
     </main>

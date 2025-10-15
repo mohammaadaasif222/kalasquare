@@ -53,7 +53,7 @@ export function ArtistSlider({ title, seeAllHref = "#", artists, autoplayMs = 35
 
   return (
     <section className="space-y-4">
-      <header className="flex items-center justify-between">
+      {/* <header className="flex items-center justify-between">
         <h2 className="flex items-center gap-2 text-sm font-semibold tracking-wide text-muted-foreground">
           <span className="inline-block size-5 rounded-full border" aria-hidden="true" />
           <span className="text-foreground">{title}</span>
@@ -64,7 +64,26 @@ export function ArtistSlider({ title, seeAllHref = "#", artists, autoplayMs = 35
         >
           see all
         </a>
-      </header>
+      </header> */}
+
+      <div className="mb-6 flex justify-between items-end">
+        <div>
+          <h2 className="text-2xl font-bold text-gray-900 sm:text-3xl">
+            {title} ✨
+          </h2> 
+          <p className="mt-1.5 text-sm text-gray-600 sm:text-base">
+            Explore top events and unforgettable experiences
+          </p>
+        </div>
+        <div>
+          <a
+            href={seeAllHref}
+            className="text-md text-[var(--brand)] underline-offset-4 hover:[var(--brand)]/60 hover:underline"
+          >
+            see all
+          </a>
+        </div>
+      </div>
 
       <div className="relative">
         <div className="absolute inset-y-0 left-0 z-10 flex items-center pl-1">

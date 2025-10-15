@@ -32,7 +32,7 @@ export default function SiteHeader() {
           <div className="hidden w-full sm:flex items-center justify-end gap-1 text-base">
             <button
               type="button"
-              className="inline-flex items-center gap-1 rounded px-2 py-1 hover:bg-muted"
+              className="inline-flex text-muted-foreground text-xs items-center gap-1 rounded px-2 py-1 cursor-pointer hover:text-black"
               aria-label="Change location"
             >
               <span>Delhi-NCR</span>
@@ -80,10 +80,10 @@ export default function SiteHeader() {
         </div>
       </div>
 
-      <div className="hidden border-b bg-[var(--subtle)] sm:block">
-        <nav className="mx-auto flex h-10 max-w-5xl items-center justify-end gap-6 px-3 sm:px-4">
+      <div className="hidden bg-[var(--subtle)] sm:block">
+        <nav className="mx-auto flex h-10 max-w-6xl items-center justify-end gap-6 px-3 sm:px-4">
           {menus.map((m) => (
-            <Link key={m} className="text-base hover:underline" href="#">
+            <Link key={m} className="text-xs text-muted-foreground hover:underline " href="#">
               {m}
             </Link>
           ))}
