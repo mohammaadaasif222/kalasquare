@@ -180,7 +180,7 @@ export default function HomePage() {
 
         {/* POPULAR TALENT CATEGORIES */}
 
-        <section className="py-16 md:py-24 px-4">
+        <section className="py-16 md:py-16 px-4">
           <div className="w-full max-w-7xl mx-auto">
             <div className="max-w-xl mx-auto mb-12">
               <div className="relative mb-6">
