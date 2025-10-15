@@ -27,7 +27,7 @@ const venues = [
   {
     coverSrc: "/vanues/addy-s-studio-cover.jpg",
     logoSrc: "/vanues/addy-s-studio-logo.jpg",
-    name: "Addy Studio & Productions",
+    name: "Studio & Productions",
     city: "South Delhi",
     rating: 5,
   },

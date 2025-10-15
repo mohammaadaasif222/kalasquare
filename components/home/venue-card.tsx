@@ -65,7 +65,7 @@ export function VenueCard({ coverSrc, logoSrc, name, city, rating = 5, className
       </div>
 
   
-      <div className="mx-4 -mt-10 z-50 rounded-xl border bg-card px-3 py-2.5 shadow-sm transition-all duration-300 hover:shadow-md">
+      <div className="mx-4 -mt-10 z-50 rounded-xl border bg-card p-2 md:px-3 md:py-2.5 shadow-sm transition-all duration-300 hover:shadow-md">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2.5">
             <Avatar className="h-8 w-8 ring-1 ring-border transition-all duration-300 hover:ring-2 hover:ring-primary">
@@ -89,7 +89,7 @@ export function VenueCard({ coverSrc, logoSrc, name, city, rating = 5, className
       </div>
 
       {/* Bottom row */}
-      <div className="flex items-center justify-between px-6 pb-4 mt-auto">
+      <div className="flex items-center justify-between px-3 pb-2 md:px-6 md:pb-4 mt-auto">
         <p className="text-xs ">{city}</p>
         <Button 
           size="sm" 

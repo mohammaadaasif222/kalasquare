@@ -68,10 +68,10 @@ export function ArtistSlider({ title, seeAllHref = "#", artists, autoplayMs = 35
 
       <div className="mb-6 flex justify-between items-end">
         <div>
-          <h2 className="text-2xl font-bold text-gray-900 sm:text-3xl">
+          <h2 className="text-2xl font-bold text-gray-900 lg:text-2xl">
             {title} ✨
           </h2> 
-          <p className="mt-1.5 text-sm text-gray-600 sm:text-base">
+          <p className="mt-1.5 text-xs text-gray-600 lg:text-base">
             Explore top events and unforgettable experiences
           </p>
         </div>
