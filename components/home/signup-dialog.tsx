@@ -44,11 +44,11 @@ export function SignupDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-[560px] p-6 sm:p-8">
+      <DialogContent className="max-w-md my-8 max-h-full sm:p-8">
         <DialogHeader className="mb-4">
           <DialogTitle className="text-center text-2xl font-semibold">Get Started</DialogTitle>
-          <DialogClose className="absolute right-4 top-4 rounded-md p-1 hover:bg-muted" aria-label="Close">
-            <X className="size-5" />
+          <DialogClose className="absolute right-4 cursor-pointer top-4 rounded-md p-1 hover:bg-muted" aria-label="Close">
+            {/* <X className="size-5" /> */}
           </DialogClose>
         </DialogHeader>
 

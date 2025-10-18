@@ -12,8 +12,9 @@ import { cn } from "@/lib/utils"
 import { MapPin, Menu } from "lucide-react"
 import { SignupDialog } from "./signup-dialog"
 import Image from "next/image"
+import GetStartedModal from "../models/get-started-modal"
 
-const menus = ['login',"Hire Talent", "Top Creators", "Events & Shows", "Exclusive",] // add more if needed
+const menus = ['login', "Hire Talent", "Top Creators", "Events & Shows", "Exclusive",] // add more if needed
 
 export default function SiteHeader() {
   const [drawerOpen, setDrawerOpen] = React.useState(false)
@@ -51,7 +52,8 @@ export default function SiteHeader() {
                 </Button>
 
               </DialogTrigger>
-              <SignupDialog open={authOpen} onOpenChange={setAuthOpen} />
+              {/* <SignupDialog open={authOpen} onOpenChange={setAuthOpen} /> */}
+              <GetStartedModal isOpen={authOpen} onClose={() => setAuthOpen(false)} />
             </Dialog>
 
             <Sheet open={drawerOpen} onOpenChange={setDrawerOpen}>
