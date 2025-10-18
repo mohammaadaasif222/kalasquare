@@ -13,7 +13,7 @@ import { MapPin, Menu } from "lucide-react"
 import { SignupDialog } from "./signup-dialog"
 import Image from "next/image"
 
-const menus = ["Hire Talent", "Top Creators", "Events & Shows", "Exclusive"] // add more if needed
+const menus = ['login',"Hire Talent", "Top Creators", "Events & Shows", "Exclusive",] // add more if needed
 
 export default function SiteHeader() {
   const [drawerOpen, setDrawerOpen] = React.useState(false)
@@ -60,7 +60,7 @@ export default function SiteHeader() {
                   aria-label="Open menu"
                   className="inline-flex h-8 w-12 items-center justify-center rounded-md hover:bg-muted"
                 >
-                  <img src={'/menu-svgrepo-com.svg'}/>
+                  <img src={'/menu-svgrepo-com.svg'} />
                 </button>
               </SheetTrigger>
               <SheetContent side="right" className="w-80">
@@ -69,7 +69,7 @@ export default function SiteHeader() {
                 </SheetHeader>
                 <nav className="mt-4 grid gap-1">
                   {menus.map((m) => (
-                    <Link key={m} href="#" className="rounded px-2 py-2 hover:bg-muted">
+                    <Link key={m} href={`/${m}`} className="rounded px-2 py-2 hover:bg-muted">
                       {m}
                     </Link>
                   ))}
@@ -83,7 +83,7 @@ export default function SiteHeader() {
       <div className="hidden bg-[var(--subtle)] sm:block">
         <nav className="mx-auto flex h-10 max-w-6xl items-center justify-end gap-6 px-3 sm:px-4">
           {menus.map((m) => (
-            <Link key={m} className="text-xs text-muted-foreground hover:underline " href="#">
+            <Link key={m} className="text-xs text-muted-foreground hover:underline " href={`/${m}`}>
               {m}
             </Link>
           ))}
