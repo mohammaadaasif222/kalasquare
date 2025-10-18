@@ -5,6 +5,7 @@ import {
   LoginCredentials,
   RegisterData,
   AuthResponse,
+  GoogleLoginCredentials,
 } from '@/types/user.types';
 import * as authAPI from './authAPI';
 import Cookies from 'js-cookie';
@@ -55,6 +56,22 @@ export const loginUser = createAsyncThunk(
   async (credentials: LoginCredentials, { rejectWithValue }) => {
     try {
       const response = await authAPI.login(credentials);
+      
+      // Persist to localStorage and cookies
+      localStorage.setItem('user', JSON.stringify(response.user));
+      Cookies.set('token', response.token, { expires: 7 });
+      
+      return response;
+    } catch (error: any) {
+      return rejectWithValue(error.response?.data?.message || 'Login failed');
+    }
+  }
+);
+export const googleLogin = createAsyncThunk(
+  'auth/google',
+  async (credentials: GoogleLoginCredentials, { rejectWithValue }) => {
+    try {
+      const response = await authAPI.googleLogin(credentials);
       
       // Persist to localStorage and cookies
       localStorage.setItem('user', JSON.stringify(response.user));
@@ -191,6 +208,22 @@ const authSlice = createSlice({
         state.error = null;
       })
       .addCase(loginUser.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload as string;
+      })
+      // Login
+      .addCase(googleLogin.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(googleLogin.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isAuthenticated = true;
+        state.user = action.payload.user;
+        state.token = action.payload.token;
+        state.error = null;
+      })
+      .addCase(googleLogin.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload as string;
       })

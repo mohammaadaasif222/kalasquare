@@ -1,6 +1,7 @@
 "use client"
 
 import { X, Mail, Apple } from "lucide-react"
+import GoogleAuth from "../auth/GoogleAuth"
 
 interface GetStartedModalProps {
   isOpen: boolean
@@ -41,25 +42,16 @@ export default function GetStartedModal({ isOpen, onClose }: GetStartedModalProp
           {/* Social Login Options */}
           <div className="space-y-4 mb-4">
             {/* Google */}
-            <button className="w-full border border-gray-300 hover:border-gray-400 hover:bg-gray-50 text-gray-700 font-medium py-4 px-3 rounded-lg transition duration-200 flex items-center justify-center gap-2 text-sm">
-              <svg className="w-4 h-4" viewBox="0 0 24 24">
-                <image href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ctext x='0' y='20' fontSize='20' fill='%234285F4'%3EG%3C/text%3E%3C/svg%3E" />
-                <circle cx="12" cy="12" r="10" fill="none" stroke="#4285F4" strokeWidth="2" />
-                <text x="8" y="16" fontSize="10" fill="#4285F4" fontWeight="bold">
-                  G
-                </text>
-              </svg>
-              Continue with Google
-            </button>
-
+            <GoogleAuth/>
+          
             {/* Email */}
-            <button className="w-full border border-gray-300 hover:border-gray-400 hover:bg-gray-50 text-gray-700 font-medium py-4 px-3 rounded-lg transition duration-200 flex items-center justify-center gap-2 text-sm">
+            <button className="w-full border border-gray-300 hover:border-gray-400 hover:bg-gray-50 text-gray-700 font-medium py-3 px-3 rounded-sm transition duration-200 flex items-center justify-center gap-2 text-sm">
               <Mail size={16} className="text-gray-600" />
               Continue with Email
             </button>
 
             {/* Apple */}
-            <button className="w-full border border-gray-300 hover:border-gray-400 hover:bg-gray-50 text-gray-700 font-medium py-4 px-3 rounded-lg transition duration-200 flex items-center justify-center gap-2 text-sm">
+            <button className="w-full border border-gray-300 hover:border-gray-400 hover:bg-gray-50 text-gray-700 font-medium py-3 px-3 rounded-sm transition duration-200 flex items-center justify-center gap-2 text-sm">
               <Apple size={16} className="text-gray-900" />
               Continue with Apple
             </button>

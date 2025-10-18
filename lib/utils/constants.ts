@@ -31,6 +31,7 @@ export const AUTH_ROUTES = ['/login', '/register'];
 
 export const API_ENDPOINTS = {
   LOGIN: '/api/auth/login',
+  GOOGLE_LOGIN: '/api/auth/google',
   REGISTER: '/api/auth/register',
   LOGOUT: '/api/auth/logout',
   ME: '/api/user',
