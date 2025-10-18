@@ -1,0 +1,257 @@
+// lib/redux/features/auth/authSlice.ts
+import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
+import {
+  AuthState,
+  LoginCredentials,
+  RegisterData,
+  AuthResponse,
+} from '@/types/user.types';
+import * as authAPI from './authAPI';
+import Cookies from 'js-cookie';
+
+// Load initial state from localStorage
+const loadAuthState = (): AuthState => {
+  if (typeof window === 'undefined') {
+    return {
+      user: null,
+      token: null,
+      isAuthenticated: false,
+      isLoading: false,
+      error: null,
+    };
+  }
+
+  try {
+    const serializedUser = localStorage.getItem('user');
+    const token = Cookies.get('token');
+    
+    if (serializedUser && token) {
+      return {
+        user: JSON.parse(serializedUser),
+        token,
+        isAuthenticated: true,
+        isLoading: false,
+        error: null,
+      };
+    }
+  } catch (error) {
+    console.error('Error loading auth state:', error);
+  }
+
+  return {
+    user: null,
+    token: null,
+    isAuthenticated: false,
+    isLoading: false,
+    error: null,
+  };
+};
+
+const initialState: AuthState = loadAuthState();
+
+// Async thunks
+export const loginUser = createAsyncThunk(
+  'auth/login',
+  async (credentials: LoginCredentials, { rejectWithValue }) => {
+    try {
+      const response = await authAPI.login(credentials);
+      
+      // Persist to localStorage and cookies
+      localStorage.setItem('user', JSON.stringify(response.user));
+      Cookies.set('token', response.token, { expires: 7 });
+      
+      return response;
+    } catch (error: any) {
+      return rejectWithValue(error.response?.data?.message || 'Login failed');
+    }
+  }
+);
+
+export const registerUser = createAsyncThunk(
+  'auth/register',
+  async (data: RegisterData, { rejectWithValue }) => {
+    try {
+      const response = await authAPI.register(data);
+      
+      // Persist to localStorage and cookies
+      localStorage.setItem('user', JSON.stringify(response.user));
+      Cookies.set('token', response.token, { expires: 7 });
+      
+      return response;
+    } catch (error: any) {
+      return rejectWithValue(error.response?.data?.message || 'Registration failed');
+    }
+  }
+);
+
+export const logoutUser = createAsyncThunk(
+  'auth/logout',
+  async (_, { rejectWithValue }) => {
+    try {
+      await authAPI.logout();
+      
+      // Clear localStorage and cookies
+      localStorage.removeItem('user');
+      Cookies.remove('token');
+    } catch (error: any) {
+      // Even if API call fails, clear local data
+      localStorage.removeItem('user');
+      Cookies.remove('token');
+      return rejectWithValue(error.response?.data?.message || 'Logout failed');
+    }
+  }
+);
+
+export const fetchCurrentUser = createAsyncThunk(
+  'auth/fetchCurrentUser',
+  async (_, { rejectWithValue, getState }) => {
+    try {
+      // Check if user already exists in state
+      const state = getState() as { auth: AuthState };
+      if (state.auth.user && state.auth.isAuthenticated) {
+        return { user: state.auth.user, token: state.auth.token! };
+      }
+
+      const token = Cookies.get('token');
+      const cachedUser = localStorage.getItem('user');
+      
+      if (!token) {
+        throw new Error('No token found');
+      }
+
+      // If we have cached user data, return it immediately
+      if (cachedUser) {
+        return { user: JSON.parse(cachedUser), token };
+      }
+
+      // Otherwise fetch from API
+      const response = await authAPI.getCurrentUser();
+      
+      // Cache the user data
+      localStorage.setItem('user', JSON.stringify(response.user));
+      
+      return response;
+    } catch (error: any) {
+      localStorage.removeItem('user');
+      Cookies.remove('token');
+      return rejectWithValue(error.response?.data?.message || 'Failed to fetch user');
+    }
+  }
+);
+
+const authSlice = createSlice({
+  name: 'auth',
+  initialState,
+  reducers: {
+    clearError: (state) => {
+      state.error = null;
+    },
+    setCredentials: (state, action: PayloadAction<AuthResponse>) => {
+      state.user = action.payload.user;
+      state.token = action.payload.token;
+      state.isAuthenticated = true;
+      
+      // Persist to storage
+      localStorage.setItem('user', JSON.stringify(action.payload.user));
+      Cookies.set('token', action.payload.token, { expires: 7 });
+    },
+    logout: (state) => {
+      state.user = null;
+      state.token = null;
+      state.isAuthenticated = false;
+      
+      // Clear storage
+      localStorage.removeItem('user');
+      Cookies.remove('token');
+    },
+    rehydrateAuth: (state) => {
+      // Manually rehydrate from storage
+      const cachedUser = localStorage.getItem('user');
+      const token = Cookies.get('token');
+      
+      if (cachedUser && token) {
+        state.user = JSON.parse(cachedUser);
+        state.token = token;
+        state.isAuthenticated = true;
+      }
+    },
+  },
+  extraReducers: (builder) => {
+    builder
+      // Login
+      .addCase(loginUser.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(loginUser.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isAuthenticated = true;
+        state.user = action.payload.user;
+        state.token = action.payload.token;
+        state.error = null;
+      })
+      .addCase(loginUser.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload as string;
+      })
+      
+      // Register
+      .addCase(registerUser.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(registerUser.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isAuthenticated = true;
+        state.user = action.payload.user;
+        state.token = action.payload.token;
+        state.error = null;
+      })
+      .addCase(registerUser.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload as string;
+      })
+      
+      // Logout
+      .addCase(logoutUser.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(logoutUser.fulfilled, (state) => {
+        state.user = null;
+        state.token = null;
+        state.isAuthenticated = false;
+        state.error = null;
+        state.isLoading = false;
+      })
+      .addCase(logoutUser.rejected, (state) => {
+        // Clear state even on error
+        state.user = null;
+        state.token = null;
+        state.isAuthenticated = false;
+        state.isLoading = false;
+      })
+      
+      // Fetch current user
+      .addCase(fetchCurrentUser.pending, (state) => {
+        // Only set loading if we don't have user data
+        if (!state.user) {
+          state.isLoading = true;
+        }
+      })
+      .addCase(fetchCurrentUser.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isAuthenticated = true;
+        state.user = action.payload.user;
+        state.token = action.payload.token;
+      })
+      .addCase(fetchCurrentUser.rejected, (state) => {
+        state.isLoading = false;
+        state.isAuthenticated = false;
+        state.user = null;
+        state.token = null;
+      });
+  },
+});
+
+export const { clearError, setCredentials, logout, rehydrateAuth } = authSlice.actions;
+export default authSlice.reducer;
