@@ -20,7 +20,7 @@ export default function DashboardNavbar() {
       <div className="px-6 py-4 flex justify-between items-center">
         <div>
           <h1 className="text-2xl font-semibold text-gray-800">
-            Welcome back, {user?.name}!
+            Welcome back, {user?.email}!
           </h1>
           <p className="text-sm text-gray-500">
             {new Date().toLocaleDateString('en-US', {
