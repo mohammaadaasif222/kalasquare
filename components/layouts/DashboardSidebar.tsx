@@ -43,6 +43,12 @@ const sidebarMenus: Record<UserType, Array<{ name: string; href: string; icon: s
     { name: 'Settings', href: '/admin/settings', icon: '🔧' },
     { name: 'Reports', href: '/admin/reports', icon: '📊' },
   ],
+  user: [
+    { name: 'Dashboard', href: '/admin', icon: '⚙️' },
+    { name: 'profile', href: '/admin/users', icon: '👥' },
+    { name: 'Settings', href: '/admin/settings', icon: '🔧' },
+    { name: 'Reports', href: '/admin/reports', icon: '📊' },
+  ],
 };
 
 export default function DashboardSidebar() {
