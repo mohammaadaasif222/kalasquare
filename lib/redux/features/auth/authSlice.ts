@@ -6,8 +6,10 @@ import {
   RegisterData,
   AuthResponse,
   GoogleLoginCredentials,
+  User,
 } from '@/types/user.types';
 import * as authAPI from './authAPI';
+import * as userAPI from '../user/userAPI';
 import Cookies from 'js-cookie';
 
 // Load initial state from localStorage
@@ -67,6 +69,7 @@ export const loginUser = createAsyncThunk(
     }
   }
 );
+
 export const googleLogin = createAsyncThunk(
   'auth/google',
   async (credentials: GoogleLoginCredentials, { rejectWithValue }) => {
@@ -115,6 +118,18 @@ export const logoutUser = createAsyncThunk(
       localStorage.removeItem('user');
       Cookies.remove('token');
       return rejectWithValue(error.response?.data?.message || 'Logout failed');
+    }
+  }
+);
+
+export const updateUser = createAsyncThunk(
+  'auth/update',
+  async ({ id, data }: { id: any; data: Partial<User> }, { rejectWithValue }) => {
+    try {
+      const response = await userAPI.updateUser(id, data);
+      return response.updated;
+    } catch (error: any) {
+      return rejectWithValue(error.response?.data?.message || 'Failed to update user');
     }
   }
 );
@@ -264,6 +279,22 @@ const authSlice = createSlice({
         state.isLoading = false;
       })
       
+        // Update user
+      .addCase(updateUser.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(updateUser.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.user = action.payload;
+        state.error = null;
+        // Update localStorage with the new user data
+        localStorage.setItem('user', JSON.stringify(action.payload));
+      })
+      .addCase(updateUser.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload as string;
+      })
       // Fetch current user
       .addCase(fetchCurrentUser.pending, (state) => {
         // Only set loading if we don't have user data

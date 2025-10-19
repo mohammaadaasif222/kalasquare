@@ -3,7 +3,8 @@ import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { googleLogin } from '@/lib/redux/features/auth/authSlice';
-import { updateUser, clearUserError, clearUserSuccess } from '@/lib/redux/features/user/userSlice';
+import {  clearUserError, clearUserSuccess } from '@/lib/redux/features/user/userSlice';
+import { updateUser } from '@/lib/redux/features/auth/authSlice';
 import { DASHBOARD_ROUTES } from '@/lib/utils/constants';
 import { UserType } from '@/types/user.types';
 
@@ -133,7 +134,7 @@ export const useGoogleAuth = ({ redirect, clientId }: UseGoogleAuthProps) => {
           },
         })
       ).unwrap();
-
+      console.log(profileData)
       // On success
       setShowProfileModal(false);
       const targetRoute = redirect || DASHBOARD_ROUTES[profileData.user_type] || '/dashboard';
