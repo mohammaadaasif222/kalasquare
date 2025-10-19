@@ -107,7 +107,7 @@ export const useGoogleAuth = ({ redirect, clientId }: UseGoogleAuthProps) => {
     if (user) {
       if (user.user_type === 'user') {
         setShowProfileModal(true);
-      } else if (user.user_type && (user.user_type as string) === "user") {
+      } else if (user.user_type && (user.user_type as string) !== "user") {
         const targetRoute = redirect || DASHBOARD_ROUTES[user.user_type as UserType] || '/dashboard';
         router.push(targetRoute);
       }
@@ -134,8 +134,7 @@ export const useGoogleAuth = ({ redirect, clientId }: UseGoogleAuthProps) => {
           },
         })
       ).unwrap();
-      console.log(profileData)
-      // On success
+        // On success
       setShowProfileModal(false);
       const targetRoute = redirect || DASHBOARD_ROUTES[profileData.user_type] || '/dashboard';
       router.push(targetRoute);
