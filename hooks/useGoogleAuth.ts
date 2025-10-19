@@ -5,6 +5,7 @@ import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { googleLogin } from '@/lib/redux/features/auth/authSlice';
 import { updateUser, clearUserError, clearUserSuccess } from '@/lib/redux/features/user/userSlice';
 import { DASHBOARD_ROUTES } from '@/lib/utils/constants';
+import { UserType } from '@/types/user.types';
 
 interface GoogleResponse {
   credential: string;
@@ -105,8 +106,8 @@ export const useGoogleAuth = ({ redirect, clientId }: UseGoogleAuthProps) => {
     if (user) {
       if (user.user_type === 'user') {
         setShowProfileModal(true);
-      } else if (user.user_type && user.user_type !== 'user') {
-        const targetRoute = redirect || DASHBOARD_ROUTES[user.user_type as UserRole] || '/dashboard';
+      } else if (user.user_type && (user.user_type as string) === "user") {
+        const targetRoute = redirect || DASHBOARD_ROUTES[user.user_type as UserType] || '/dashboard';
         router.push(targetRoute);
       }
     }
