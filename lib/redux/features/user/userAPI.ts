@@ -2,7 +2,7 @@
 import axios from '@/lib/api/axios';
 
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api/users';
+const API_URL = 'https://api.netprofit25.in/api/users';
 
 export const createUser = async (data: any) => {
   const res = await axios.post(API_URL, data);
