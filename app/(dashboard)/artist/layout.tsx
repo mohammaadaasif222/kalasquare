@@ -54,7 +54,7 @@ export default function ArtistLayout({
                   <h1 className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
                     Artist Studio
                   </h1>
-                  <p className="text-sm text-gray-600">Welcome back, {user?.name}! 🎨</p>
+                  <p className="text-sm text-gray-600">Welcome back, {user?.email}! 🎨</p>
                 </div>
               </div>
 
