@@ -3,7 +3,7 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 
 const axiosInstance = axios.create({
-  baseURL: 'http://localhost:5000',
+  baseURL: 'https://api.netprofit25.in',
   headers: {
     'Content-Type': 'application/json',
   },

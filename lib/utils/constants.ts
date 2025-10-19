@@ -8,6 +8,7 @@ export const USER_TYPES: Record<UserType, string> = {
   agency: 'Agency',
   venue: 'Venue',
   admin: 'Admin',
+  user:'user'
 };
 
 export const DASHBOARD_ROUTES: Record<UserType, string> = {
@@ -17,6 +18,7 @@ export const DASHBOARD_ROUTES: Record<UserType, string> = {
   agency: '/agency',
   venue: '/venue',
   admin: '/admin',
+  user:"user"
 };
 
 export const PUBLIC_ROUTES = [
