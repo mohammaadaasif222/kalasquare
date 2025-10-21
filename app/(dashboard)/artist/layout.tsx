@@ -21,7 +21,7 @@ export default function ArtistLayout({
 
   const handleLogout = async () => {
     await dispatch(logoutUser());
-    router.push('/login');
+    router.push('/');
   };
 
   const artistMenuItems = [

@@ -14,7 +14,7 @@ import { SignupDialog } from "./signup-dialog"
 import Image from "next/image"
 import GetStartedModal from "../models/get-started-modal"
 
-const menus = ['login', "Hire Talent", "Top Creators", "Events & Shows", "Exclusive",] // add more if needed
+const menus = ['login', "Hire Talent", "Top-Creators", "Events & Shows", "Exclusive",] // add more if needed
 
 export default function SiteHeader() {
   const [drawerOpen, setDrawerOpen] = React.useState(false)

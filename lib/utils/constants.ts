@@ -32,10 +32,14 @@ export const PUBLIC_ROUTES = [
 export const AUTH_ROUTES = ['/login', '/register'];
 
 export const API_ENDPOINTS = {
-  LOGIN: '/api/auth/login',
-  GOOGLE_LOGIN: '/api/auth/google',
-  REGISTER: '/api/auth/register',
-  LOGOUT: '/api/auth/logout',
-  ME: '/api/user',
-  REFRESH_TOKEN: '/api/auth/refresh',
+  LOGIN: '/auth/login',
+  GOOGLE_LOGIN: '/auth/google',
+  REGISTER: '/auth/register',
+  LOGOUT: '/auth/logout',
+  ME: '/user',
+  REFRESH_TOKEN: '/auth/refresh',
+  CREATE_PROFILE:'/profiles',
+  GET_PROFILE:'/profiles',
+  UPDATE_PROFILE:'/profiles',
+  DELETE_PROFILE:'/profiles'
 };

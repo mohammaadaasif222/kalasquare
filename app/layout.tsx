@@ -7,6 +7,7 @@ import "./globals.css"
 
 import { Suspense } from "react"
 import Providers from './providers';
+import Loader from "@/components/shared/Loader"
 export const metadata: Metadata = {
   title: "Book Your Artist For Events - Hire Artist, Singers, Comedians, Anchor, Influencers, Best Influencer Management Agency in Delhi",
   description: "Discover the power of influencer marketing to amplify your brand. Our expert strategies connect you with top influencers to drive engagement, increase visibility, and boost sales. Unlock your brand&#039;s potential today",
@@ -21,7 +22,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`font-sans ${GeistSans.variable} ${GeistMono.variable}`}>
-        <Suspense fallback={<div>Loading...</div>}>
+        <Suspense fallback={<Loader/>}>
           <Providers>
             <div className="min-h-[calc(100dvh-56px)]">{children}</div>
           </Providers>

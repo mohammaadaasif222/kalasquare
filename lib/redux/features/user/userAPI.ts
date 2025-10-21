@@ -1,8 +1,6 @@
 // lib/redux/features/auth/authAPI.ts
 import axios from '@/lib/api/axios';
-
-
-const API_URL = 'https://api.netprofit25.in/api/users';
+const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/users` ;
 
 export const createUser = async (data: any) => {
   const res = await axios.post(API_URL, data);
@@ -20,7 +18,7 @@ export const getUserById = async (id: string) => {
 };
 
 export const updateUser = async (id: string, data: any) => {
-  const res = await axios.put(`${API_URL}/update/${id}`, data);
+  const res = await axios.patch(`${API_URL}/${id}`, data);
   return res.data;
 };
 

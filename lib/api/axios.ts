@@ -3,7 +3,7 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 
 const axiosInstance = axios.create({
-  baseURL: 'https://api.netprofit25.in',
+  baseURL: process.env.NEXT_PUBLIC_API_URL,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -35,7 +35,7 @@ axiosInstance.interceptors.response.use(
 
       try {
         // Try to refresh token
-        const { data } = await axios.post('/api/auth/refresh');
+        const { data } = await axios.post('/auth/refresh');
         Cookies.set('token', data.token);
         
         // Retry original request with new token
