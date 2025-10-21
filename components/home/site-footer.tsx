@@ -56,7 +56,7 @@ export function SiteFooter() {
       <div className="border-t">
         <div className="container mx-auto px-4 py-4">
           <p className="text-center text-xs text-muted-foreground">
-            © 2025 KalaSquare · A Dabit Info Media Private Limited initiative.
+            © {new Date().getFullYear()} KalaSquare · A Delhi Info Media Private Limited initiative.
           </p>
         </div>
       </div>
