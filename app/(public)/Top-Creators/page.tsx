@@ -277,7 +277,7 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-background">
 
-      <div className="flex flex-col lg:flex-row gap-6 p-4 lg:p-8 pb-24 lg:pb-8">
+      <div className="flex max-w-6xl mx-auto flex-col lg:flex-row gap-6 px-4 pb-24 lg:py-8">
         {/* Sidebar - Hidden on mobile */}
         <div className="hidden lg:block w-full lg:w-64 flex-shrink-0">
           <Sidebar

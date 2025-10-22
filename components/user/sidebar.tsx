@@ -2,6 +2,7 @@
 
 import { Home, BookOpen, Briefcase, BarChart3, Settings, LogOut, FileText, Eye, User } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { useRouter } from "next/navigation"
 
 interface SidebarProps {
   activeNav: string
@@ -9,6 +10,14 @@ interface SidebarProps {
 }
 
 export default function Sidebar({ activeNav, setActiveNav }: SidebarProps) {
+  const router = useRouter()
+
+   const handleLogout = () => {
+    localStorage.clear() 
+    sessionStorage.clear()
+    router.push("/")
+  }
+
   const menuItems = [
     { id: "dashboard", label: "Dashboard", icon: Home },
     { id: "bookings", label: "Bookings & Collaboration", icon: BookOpen },
@@ -78,7 +87,10 @@ export default function Sidebar({ activeNav, setActiveNav }: SidebarProps) {
       </div>
 
       {/* Logout */}
-      <button className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sidebar-foreground hover:bg-sidebar-accent transition-colors mt-auto">
+      <button
+        onClick={handleLogout}
+        className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sidebar-foreground hover:bg-sidebar-accent transition-colors mt-auto"
+      >
         <LogOut size={20} />
         <span className="text-sm font-medium">Log Out</span>
       </button>
