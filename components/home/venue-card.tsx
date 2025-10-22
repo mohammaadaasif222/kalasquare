@@ -30,7 +30,7 @@ export function VenueCard({ coverSrc, logoSrc, name, city, rating = 5, className
   return (
     <Card 
       className={cn(
-        "overflow-hidden rounded-xl py-0 shadow-sm bg-card transition-all duration-700 ease-out h-full flex flex-col",
+        "overflow-hidden rounded-sm py-0 shadow-sm bg-card transition-all duration-700 ease-out h-full flex flex-col",
         isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8",
         "hover:shadow-lg hover:-translate-y-1 hover:scale-[1.02]",
         className
@@ -49,7 +49,7 @@ export function VenueCard({ coverSrc, logoSrc, name, city, rating = 5, className
         </div>
 
         {/* Rating over image */}
-        <div className="absolute bottom-7 left-3 flex items-center gap-1 rounded-full bg-black/30 px-2 py-1 backdrop-blur-sm transition-all duration-300 hover:bg-black/50">
+        <div className="absolute bottom-2 left-3 flex items-center gap-1 rounded-full bg-black/30 px-2 py-1 backdrop-blur-sm transition-all duration-300 hover:bg-black/50">
           {stars.map((_, i) => (
             <Star
               key={i}
@@ -65,7 +65,7 @@ export function VenueCard({ coverSrc, logoSrc, name, city, rating = 5, className
       </div>
 
   
-      <div className="mx-4 -mt-10 z-50 rounded-xl border bg-card p-2 md:px-3 md:py-2.5 shadow-sm transition-all duration-300 hover:shadow-md">
+      <div className="mx-4  z-50 transition-all duration-300 ">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2.5">
             <Avatar className="h-8 w-8 ring-1 ring-border transition-all duration-300 hover:ring-2 hover:ring-primary">
@@ -77,7 +77,7 @@ export function VenueCard({ coverSrc, logoSrc, name, city, rating = 5, className
             </Avatar>
             <p className="text-xs font-mono">{name}</p>
           </div>
-          {/* Online dot with pulse */}
+       
           <span 
             className="relative h-2.5 w-2.5 rounded-full bg-[var(--chart-2)]" 
             aria-label="online" 
@@ -89,7 +89,7 @@ export function VenueCard({ coverSrc, logoSrc, name, city, rating = 5, className
       </div>
 
       {/* Bottom row */}
-      <div className="flex items-center justify-between px-3 pb-2 md:px-6 md:pb-4 mt-auto">
+      <div className="flex items-center justify-between px-3 pb-2 md:px-4 md:pb-4 mt-auto">
         <p className="text-xs ">{city}</p>
         <Button 
           size="sm" 

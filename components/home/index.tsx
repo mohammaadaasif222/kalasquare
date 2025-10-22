@@ -59,19 +59,36 @@ export default function HomePageComponent() {
     { name: "Rosò Stage", city: "Mumbai" },
     { name: "Addy's Club", city: "South Delhi" },
   ]
-
+  const carouselImages = [
+    {
+      src: "https://kalasquare.com/frontend/images/craousel1.jpg",
+      alt: "Awards banner",
+    },
+    {
+      src: "https://kalasquare.com/frontend/images/craousel2.jpg",
+      alt: "Registration open",
+    },
+    {
+      src: "/event-poster.jpg",
+      alt: "Featured event",
+    },
+  ];
   return (
     <main className="pb-20 md:pb-8">
-      <section className="container mx-auto px-0 pt-3 mt-5">
+      {/* <section className="container mx-auto px-0 pt-3 mt-5 group relative">
         <Carousel opts={{ align: "center", loop: true, skipSnaps: false }} className="relative" aria-label="Highlights">
-          <CarouselContent className="px-3">
+          <CarouselContent className="px-0">
             <CarouselItem className="basis-[88%] sm:basis-[70%]">
-              <div className="overflow-hidden rounded-xl border bg-card">
-                <img src="https://kalasquare.com/frontend/images/craousel1.jpg" alt="Awards banner" className="h-44 w-full object-cover md:h-64" />
+              <div className="overflow-hidden rounded-xs border bg-card">
+                <img
+                  src="https://kalasquare.com/frontend/images/craousel1.jpg"
+                  alt="Awards banner"
+                  className="h-44 w-full object-cover md:h-64"
+                />
               </div>
             </CarouselItem>
             <CarouselItem className="basis-[88%] sm:basis-[70%]">
-              <div className="overflow-hidden rounded-xl border bg-card">
+              <div className="overflow-hidden rounded-xs border bg-card">
                 <img
                   src="https://kalasquare.com/frontend/images/craousel2.jpg"
                   alt="Registration open"
@@ -80,13 +97,46 @@ export default function HomePageComponent() {
               </div>
             </CarouselItem>
             <CarouselItem className="basis-[88%] sm:basis-[70%]">
-              <div className="overflow-hidden rounded-xl border bg-card">
-                <img src="/event-poster.jpg" alt="Featured event" className="h-44 w-full object-cover md:h-64" />
+              <div className="overflow-hidden rounded-xs border bg-card">
+                <img
+                  src="/event-poster.jpg"
+                  alt="Featured event"
+                  className="h-44 w-full object-cover md:h-64"
+                />
               </div>
             </CarouselItem>
           </CarouselContent>
-          {/* Small arrows; hide on very small to let swipe dominate */}
-          <div className="pointer-events-none absolute inset-0 hidden items-center justify-between px-1 sm:flex">
+
+      
+          <div className="pointer-events-none absolute inset-0 hidden items-center justify-between px-1 sm:flex opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            <div className="pointer-events-auto">
+              <CarouselPrevious className="left-2 bg-background/80" />
+            </div>
+            <div className="pointer-events-auto">
+              <CarouselNext className="right-2 bg-background/80" />
+            </div>
+          </div>
+        </Carousel>
+      </section> */}
+
+      <section className="container mx-auto px-0 pt-3 mt-5 group relative">
+        <Carousel opts={{ align: "center", loop: true, skipSnaps: false }} className="relative" aria-label="Highlights">
+          <CarouselContent className="px-0">
+            {carouselImages.map((image, index) => (
+              <CarouselItem key={index} className="basis-[88%] sm:basis-[70%]">
+                <div className="overflow-hidden rounded-xs border bg-card">
+                  <img
+                    src={image.src}
+                    alt={image.alt}
+                    className="h-44 w-full object-cover md:h-64"
+                  />
+                </div>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+
+          {/* Navigation Arrows (show only on hover) */}
+          <div className="pointer-events-none absolute inset-0 hidden items-center justify-between px-1 sm:flex opacity-0 group-hover:opacity-100 transition-opacity duration-300">
             <div className="pointer-events-auto">
               <CarouselPrevious className="left-2 bg-background/80" />
             </div>
@@ -96,6 +146,7 @@ export default function HomePageComponent() {
           </div>
         </Carousel>
       </section>
+
 
       <div className="max-w-6xl m-auto">
         <section className="container mx-auto px-4 py-8">
@@ -267,7 +318,7 @@ export default function HomePageComponent() {
         </section>
 
         {/* VENUES */}
-        <VenuesSection/>
+        <VenuesSection />
         {/* <section className="container mx-auto px-4 py-6">
           <SectionHeader title="Venues" href="#" />
           <div className="mt-4">

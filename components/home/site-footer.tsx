@@ -4,7 +4,7 @@ import { Facebook, Instagram, Youtube, Twitter } from "lucide-react"
 export function SiteFooter() {
   return (
     <footer className="border-t bg-card">
-      <div className="container mx-auto px-4 py-8">
+      <div className="container max-w-6xl mx-auto px-4 py-8">
         <div className="grid grid-cols-2 gap-6 sm:grid-cols-3">
           <div>
             <h4 className="text-sm font-semibold">Information</h4>

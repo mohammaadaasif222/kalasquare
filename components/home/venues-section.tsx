@@ -43,7 +43,7 @@ const venues = [
 export function VenuesSection() {
   return (
     <section aria-labelledby="venues-heading" className="mx-auto max-w-7xl py-8 md:py-12 lg:py-16">
-      <header className="mb-6 px-4 md:px-6 lg:px-8 animate-in fade-in slide-in-from-top-4 duration-700">
+      <header className="mb-6 px-4 animate-in fade-in slide-in-from-top-4 duration-700">
         <h2 id="venues-heading" className="text-pretty text-2xl md:text-3xl lg:text-4xl font-bold tracking-tight">
           Venues
         </h2>
@@ -58,7 +58,7 @@ export function VenuesSection() {
       */}
       <div
         className="
-          flex gap-4 overflow-x-auto px-4 md:px-6 lg:px-8 pb-4
+          flex gap-4 overflow-x-auto px-4  pb-4
           snap-x snap-mandatory scroll-smooth
           [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden
           md:grid md:grid-cols-5 md:gap-6 md:overflow-visible md:snap-none
