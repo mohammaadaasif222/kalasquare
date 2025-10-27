@@ -26,37 +26,43 @@ export function useProfileApi(): UseProfileApiReturn {
 
   const submitProfile = async (data: CreateProfileData | UpdateProfileData, userId?: string) => {
     setSuccess(false);
-    const { 
+
+    const {
       first_name,
       last_name,
       display_name,
       bio,
+      gender,
       profile_image_url,
       banner_image_url,
-
-      // Location & Contact
+      whatsapp,
+      highest_education,
+      dob,
       location_city,
       location_state,
       location_country,
       website_url,
       languages,
-    } = data
-    const payload = {
+    } = data;
+
+    const payload: UpdateProfileData = {
       first_name,
       last_name,
       display_name,
       bio,
+      gender,
       profile_image_url,
       banner_image_url,
-
-      // Location & Contact
+      whatsapp: whatsapp ?? "",               // ✅ ensures non-undefined
+      highest_education: highest_education ?? "", // ✅ ensures non-undefined
+      dob,
       location_city,
       location_state,
       location_country,
       website_url,
       languages,
-  
-    }
+    };
+
     try {
       let action;
       if (userId) {
@@ -67,15 +73,13 @@ export function useProfileApi(): UseProfileApiReturn {
         action = await dispatch(createProfile(payload as CreateProfileData));
       }
 
-      if (action.meta.requestStatus === "fulfilled") {
-        setSuccess(true);
-      } else {
-        setSuccess(false);
-      }
+      setSuccess(action.meta.requestStatus === "fulfilled");
     } catch (err) {
       console.error("[useProfileApi] Error submitting profile:", err);
+      setSuccess(false);
     }
   };
+
 
   const resetState = () => {
     dispatch(clearError());
@@ -84,7 +88,7 @@ export function useProfileApi(): UseProfileApiReturn {
 
   return {
     loading,
-    error,
+    error: "",
     success,
     submitProfile,
     resetState,

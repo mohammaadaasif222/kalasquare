@@ -1,9 +1,15 @@
 // store/slices/profileSlice.ts
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import axiosInstance from '@/lib/api/axios';
-import { CreateProfileData, ProfileState, UpdateProfileData, UserProfile } from '@/types/profile.types';
+import { CreateProfileData,  UpdateProfileData, UserProfile } from '@/types/profile.types';
 import * as profileAPI from './profileAPI';
+interface ProfileState{
+  profile: {} | null
+  profiles:UserProfile[]
+  loading:boolean,
+  error:null | {}
 
+}
 const initialState: ProfileState = {
   profile: null,
   profiles: [],
