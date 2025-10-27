@@ -3,6 +3,7 @@
 import { Heart, Play } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Star } from "lucide-react"
+import Link from "next/link"
 
 interface Creator {
   id: string
@@ -24,7 +25,8 @@ export default function CreatorGrid({ creators, onTalkToCreator, onCreatorDouble
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mb-8">
       {creators.map((creator) => (
-        <div
+        <Link
+          href={`/top-creators/${creator.id}`}
           key={creator.id}
           className="bg-card rounded-lg overflow-hidden border border-border hover:shadow-lg transition-shadow cursor-pointer"
           onDoubleClick={() => onCreatorDoubleClick(creator)}
@@ -88,7 +90,7 @@ export default function CreatorGrid({ creators, onTalkToCreator, onCreatorDouble
               </Button>
             </div>
           </div>
-        </div>
+        </Link>
       ))}
     </div>
   )
