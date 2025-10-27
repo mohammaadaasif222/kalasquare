@@ -9,7 +9,7 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Card } from "@/components/ui/card"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { useCloudinaryUpload } from "@/hooks/use-cloudinary-upload"
+import { useCloudinaryUpload } from "@/hooks/use-cloudnary-upload"
 import { Upload, X } from "lucide-react"
 
 interface CreateTalentFormProps {
@@ -43,12 +43,20 @@ export function CreateTalentForm({ userId }: CreateTalentFormProps) {
   const [newCertification, setNewCertification] = useState("")
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value, type, checked } = e.target
+    const { name, value } = e.target;
+
+    let newValue: string | boolean = value;
+
+    if (e.target instanceof HTMLInputElement && e.target.type === "checkbox") {
+      newValue = e.target.checked;
+    }
+
     setFormData((prev) => ({
       ...prev,
-      [name]: type === "checkbox" ? checked : value,
-    }))
-  }
+      [name]: newValue,
+    }));
+  };
+
 
   const handleSelectChange = (name: string, value: string) => {
     setFormData((prev) => ({
