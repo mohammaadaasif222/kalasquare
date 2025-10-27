@@ -4,7 +4,8 @@ import { createContext, useContext, useState } from "react"
 const UserNavContext = createContext<any>(null)
 
 export const UserNavProvider = ({ children }: { children: React.ReactNode }) => {
-  const [activeNav, setActiveNav] = useState("dashboard")
+  const [activeNav, setActiveNav] = useState("edit-profile")
+  
   return (
     <UserNavContext.Provider value={{ activeNav, setActiveNav }}>
       {children}

@@ -1,73 +1,11 @@
 // store/slices/talentSlice.ts
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import axiosInstance from '@/lib/api/axios';
+import { CreateTalentDto, UpdateTalentDto } from '@/types/profile.types';
+import { AvailabilityStatus, ExperienceLevel, TalentType } from '@/hooks/use-talent';
+import { TalentProfile } from '@/types/talent.types';
 
-type TalentType = 'artist' | 'influencer' | 'both';
-type ExperienceLevel = 'beginner' | 'intermediate' | 'professional' | 'expert';
-type AvailabilityStatus = 'available' | 'busy' | 'booked' | 'inactive';
 
-interface TalentProfile {
-  id: string;
-  user_id: string;
-  talent_type: TalentType;
-  categories: any;
-  specializations?: any;
-  experience_level: ExperienceLevel;
-  years_of_experience?: number;
-  rate_per_hour?: number;
-  rate_per_project?: number;
-  rate_per_post?: number;
-  currency?: string;
-  availability_status?: AvailabilityStatus;
-  portfolio_description?: string;
-  achievements?: string;
-  awards?: any;
-  certifications?: any;
-  equipment_owned?: any;
-  collaboration_preferences?: any;
-  created_at: string;
-  updated_at: string;
-  socialAccounts?: any[];
-}
-
-interface CreateTalentData {
-  user_id: string;
-  talent_type: TalentType;
-  categories: any;
-  specializations?: any;
-  experience_level: ExperienceLevel;
-  years_of_experience?: number;
-  rate_per_hour?: number;
-  rate_per_project?: number;
-  rate_per_post?: number;
-  currency?: string;
-  availability_status?: AvailabilityStatus;
-  portfolio_description?: string;
-  achievements?: string;
-  awards?: any;
-  certifications?: any;
-  equipment_owned?: any;
-  collaboration_preferences?: any;
-}
-
-interface UpdateTalentData {
-  talent_type?: TalentType;
-  categories?: any;
-  specializations?: any;
-  experience_level?: ExperienceLevel;
-  years_of_experience?: number;
-  rate_per_hour?: number;
-  rate_per_project?: number;
-  rate_per_post?: number;
-  currency?: string;
-  availability_status?: AvailabilityStatus;
-  portfolio_description?: string;
-  achievements?: string;
-  awards?: any;
-  certifications?: any;
-  equipment_owned?: any;
-  collaboration_preferences?: any;
-}
 
 interface TalentFilters {
   talent_type?: TalentType;
@@ -94,7 +32,7 @@ const initialState: TalentState = {
 // Async Thunks
 export const createTalent = createAsyncThunk(
   'talent/create',
-  async (data: CreateTalentData, { rejectWithValue }) => {
+  async (data: CreateTalentDto, { rejectWithValue }) => {
     try {
       const response = await axiosInstance.post('/talents', data);
       return response.data;
@@ -130,7 +68,7 @@ export const fetchAllTalents = createAsyncThunk(
 
 export const updateTalent = createAsyncThunk(
   'talent/update',
-  async ({ userId, data }: { userId: string; data: UpdateTalentData }, { rejectWithValue }) => {
+  async ({ userId, data }: { userId: string; data: UpdateTalentDto }, { rejectWithValue }) => {
     try {
       const response = await axiosInstance.patch(`/talents/${userId}`, data);
       return response.data;

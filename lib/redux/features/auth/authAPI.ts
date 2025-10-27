@@ -7,6 +7,10 @@ export const login = async (credentials: LoginCredentials): Promise<AuthResponse
   const { data } = await axios.post(API_ENDPOINTS.LOGIN, credentials);
   return data;
 };
+export const updatePassword = async (credentials: { id: string, password: string }): Promise<AuthResponse> => {
+  const { data } = await axios.post(API_ENDPOINTS.UPDATE_PASSWORD, credentials);
+  return data;
+};
 export const googleLogin = async (credentials: GoogleLoginCredentials): Promise<GoogleAuthResponse> => {
   const { data } = await axios.post(API_ENDPOINTS.GOOGLE_LOGIN, credentials);
   return data;

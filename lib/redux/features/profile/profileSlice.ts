@@ -35,6 +35,17 @@ export const fetchProfileByUserId = createAsyncThunk(
     }
   }
 );
+export const fetchProfile = createAsyncThunk(
+  'profile/fetchProfile',
+  async (_, { rejectWithValue }) => {
+    try {
+      const result = await profileAPI.getMe();
+      return result;
+    } catch (error: any) {
+      return rejectWithValue(error.response?.data?.message || 'Failed to fetch profile');
+    }
+  }
+);
 
 export const updateProfile = createAsyncThunk(
   'profile/update',
@@ -110,6 +121,18 @@ const profileSlice = createSlice({
         state.profile = action.payload;
       })
       .addCase(fetchProfileByUserId.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      })
+      .addCase(fetchProfile.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchProfile.fulfilled, (state, action: PayloadAction<UserProfile>) => {
+        state.loading = false;
+        state.profile = action.payload;
+      })
+      .addCase(fetchProfile.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
       })

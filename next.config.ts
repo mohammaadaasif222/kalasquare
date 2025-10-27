@@ -8,6 +8,10 @@ const nextConfig: NextConfig = {
         hostname: 'kalasquare.com',
         pathname: '/public/frontend/images/**',
       },
+       {
+        protocol: "https",
+        hostname: "res.cloudinary.com",
+      },
     ],
   },
 };

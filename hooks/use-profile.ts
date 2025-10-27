@@ -1,5 +1,5 @@
 // hooks/useProfile.ts
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 
@@ -9,8 +9,9 @@ import {
     UserProfile,
 } from '@/types/profile.types';
 import { AppDispatch, RootState } from '@/lib/redux/store';
-import { clearProfile, createProfile, deleteProfile, fetchProfileByUserId, searchProfiles, updateProfile } from '@/lib/redux/features/profile/profileSlice';
+import { clearProfile, createProfile, deleteProfile, fetchProfile, fetchProfileByUserId, searchProfiles, updateProfile } from '@/lib/redux/features/profile/profileSlice';
 import { clearError } from '@/lib/redux/features/auth/authSlice';
+import { fetchTalentByUserId } from '@/lib/redux/features/talent/talentSlice';
 
 // Main profile hook
 export const useProfile = () => {
@@ -19,6 +20,10 @@ export const useProfile = () => {
         (state: RootState) => state.profile
     );
 
+    useEffect(() => {
+        handleFetchMe()
+    }, [dispatch])
+
     const handleCreateProfile = useCallback(
         async (data: CreateProfileData) => {
             const result = await dispatch(createProfile(data));
@@ -26,10 +31,16 @@ export const useProfile = () => {
         },
         [dispatch]
     );
-
     const handleFetchProfile = useCallback(
         async (userId: string) => {
-            const result = await dispatch(fetchProfileByUserId(userId));
+            const result = await dispatch(fetchTalentByUserId(userId));
+            return result;
+        },
+        [dispatch]
+    );
+    const handleFetchMe = useCallback(
+        async () => {
+            const result = await dispatch(fetchProfile());
             return result;
         },
         [dispatch]

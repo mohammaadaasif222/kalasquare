@@ -21,13 +21,14 @@ const loadAuthState = (): AuthState => {
       isAuthenticated: false,
       isLoading: false,
       error: null,
+      message: null,
     };
   }
 
   try {
     const serializedUser = localStorage.getItem('user');
     const token = Cookies.get('token');
-    
+
     if (serializedUser && token) {
       return {
         user: JSON.parse(serializedUser),
@@ -35,6 +36,7 @@ const loadAuthState = (): AuthState => {
         isAuthenticated: true,
         isLoading: false,
         error: null,
+        message: null
       };
     }
   } catch (error) {
@@ -47,22 +49,35 @@ const loadAuthState = (): AuthState => {
     isAuthenticated: false,
     isLoading: false,
     error: null,
+    message: null
   };
 };
 
 const initialState: AuthState = loadAuthState();
 
 // Async thunks
+export const updatePassword = createAsyncThunk(
+  'auth/updatepassword',
+  async (credentials: { id: string, password: string }, { rejectWithValue }) => {
+    try {
+      const response = await authAPI.updatePassword(credentials);
+
+      return response;
+    } catch (error: any) {
+      return rejectWithValue(error.response?.data?.message || 'Login failed');
+    }
+  }
+);
 export const loginUser = createAsyncThunk(
   'auth/login',
   async (credentials: LoginCredentials, { rejectWithValue }) => {
     try {
       const response = await authAPI.login(credentials);
-      
+
       // Persist to localStorage and cookies
       localStorage.setItem('user', JSON.stringify(response.user));
       Cookies.set('token', response.token, { expires: 7 });
-      
+
       return response;
     } catch (error: any) {
       return rejectWithValue(error.response?.data?.message || 'Login failed');
@@ -75,11 +90,11 @@ export const googleLogin = createAsyncThunk(
   async (credentials: GoogleLoginCredentials, { rejectWithValue }) => {
     try {
       const response = await authAPI.googleLogin(credentials);
-      
+
       // Persist to localStorage and cookies
       localStorage.setItem('user', JSON.stringify(response.user));
       Cookies.set('token', response.token, { expires: 7 });
-      
+
       return response;
     } catch (error: any) {
       return rejectWithValue(error.response?.data?.message || 'Login failed');
@@ -92,11 +107,11 @@ export const registerUser = createAsyncThunk(
   async (data: RegisterData, { rejectWithValue }) => {
     try {
       const response = await authAPI.register(data);
-      
+
       // Persist to localStorage and cookies
       localStorage.setItem('user', JSON.stringify(response.user));
       Cookies.set('token', response.token, { expires: 7 });
-      
+
       return response;
     } catch (error: any) {
       return rejectWithValue(error.response?.data?.message || 'Registration failed');
@@ -108,11 +123,10 @@ export const logoutUser = createAsyncThunk(
   'auth/logout',
   async (_, { rejectWithValue }) => {
     try {
-      await authAPI.logout();
-      
-      // Clear localStorage and cookies
+ 
       localStorage.removeItem('user');
       Cookies.remove('token');
+      localStorage.clear()
     } catch (error: any) {
       // Even if API call fails, clear local data
       localStorage.removeItem('user');
@@ -146,7 +160,7 @@ export const fetchCurrentUser = createAsyncThunk(
 
       const token = Cookies.get('token');
       const cachedUser = localStorage.getItem('user');
-      
+
       if (!token) {
         throw new Error('No token found');
       }
@@ -158,10 +172,10 @@ export const fetchCurrentUser = createAsyncThunk(
 
       // Otherwise fetch from API
       const response = await authAPI.getCurrentUser();
-      
+
       // Cache the user data
       localStorage.setItem('user', JSON.stringify(response.user));
-      
+
       return response;
     } catch (error: any) {
       localStorage.removeItem('user');
@@ -182,7 +196,7 @@ const authSlice = createSlice({
       state.user = action.payload.user;
       state.token = action.payload.token;
       state.isAuthenticated = true;
-      
+
       // Persist to storage
       localStorage.setItem('user', JSON.stringify(action.payload.user));
       Cookies.set('token', action.payload.token, { expires: 7 });
@@ -191,7 +205,7 @@ const authSlice = createSlice({
       state.user = null;
       state.token = null;
       state.isAuthenticated = false;
-      
+
       // Clear storage
       localStorage.removeItem('user');
       Cookies.remove('token');
@@ -200,7 +214,7 @@ const authSlice = createSlice({
       // Manually rehydrate from storage
       const cachedUser = localStorage.getItem('user');
       const token = Cookies.get('token');
-      
+
       if (cachedUser && token) {
         state.user = JSON.parse(cachedUser);
         state.token = token;
@@ -226,6 +240,18 @@ const authSlice = createSlice({
         state.isLoading = false;
         state.error = action.payload as string;
       })
+      .addCase(updatePassword.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(updatePassword.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.message ="Password updated successfull!"
+      })
+      .addCase(updatePassword.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload as string;
+      })
       // Login
       .addCase(googleLogin.pending, (state) => {
         state.isLoading = true;
@@ -242,7 +268,7 @@ const authSlice = createSlice({
         state.isLoading = false;
         state.error = action.payload as string;
       })
-      
+
       // Register
       .addCase(registerUser.pending, (state) => {
         state.isLoading = true;
@@ -259,7 +285,7 @@ const authSlice = createSlice({
         state.isLoading = false;
         state.error = action.payload as string;
       })
-      
+
       // Logout
       .addCase(logoutUser.pending, (state) => {
         state.isLoading = true;
@@ -278,8 +304,8 @@ const authSlice = createSlice({
         state.isAuthenticated = false;
         state.isLoading = false;
       })
-      
-        // Update user
+
+      // Update user
       .addCase(updateUser.pending, (state) => {
         state.isLoading = true;
         state.error = null;

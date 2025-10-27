@@ -11,7 +11,7 @@ export const create = async (profileData: CreateProfileData): Promise<UserProfil
 
 
 export const update = async (userId: string, updateData: UpdateProfileData): Promise<UserProfile> => {
-  const { data } = await axios.post(`${API_ENDPOINTS}/${userId}`, updateData);
+  const { data } = await axios.post(`http://localhost:5000/profile/${userId}`, updateData);
   return data;
 };
 
@@ -21,5 +21,9 @@ export const logout = async (): Promise<void> => {
 
 export const getProfile = async (userId: string): Promise<UserProfile> => {
   const { data } = await axios.get(`${API_ENDPOINTS.GET_PROFILE}/${userId}`);
+  return data;
+};
+export const getMe = async (): Promise<UserProfile> => {
+  const { data } = await axios.get(`${API_ENDPOINTS.GET_PROFILE}/me`);
   return data;
 };

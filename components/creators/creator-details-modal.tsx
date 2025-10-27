@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Star } from "lucide-react"
 
 interface Creator {
-  id: number
+  id: string
   name: string
   followers: string
   category: string

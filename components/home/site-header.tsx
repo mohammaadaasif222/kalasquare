@@ -13,12 +13,22 @@ import { MapPin, Menu } from "lucide-react"
 import { SignupDialog } from "./signup-dialog"
 import Image from "next/image"
 import GetStartedModal from "../models/get-started-modal"
+import { useSelector } from "react-redux"
+import { RootState } from "@/lib/redux/store"
+import { useRouter } from "next/navigation"
 
-const menus = ['login', "Hire Talent", "Top-Creators", "Events & Shows", "Exclusive",] // add more if needed
+interface MenuType {
+  lable: string,
+  url: string
+}
+const menus = [{ lable: "Hire Talent", url: 'hire-talent' }, { lable: "Top Creators", url: 'top-creators' }, { lable: "Events & Shows", url: 'events-shows' }, { lable: "Exclusive", url: 'exclusive' }] // add more if needed
+const menuMobile = [{ lable: 'login', url: 'login' }, { lable: "Hire Talent", url: 'hire-talent' }, { lable: "Top Creators", url: 'top-creators' }, { lable: "Events & Shows", url: 'events-shows' }, { lable: "Exclusive", url: 'exclusive' }] // add more if needed
 
 export default function SiteHeader() {
+  const router = useRouter()
   const [drawerOpen, setDrawerOpen] = React.useState(false)
   const [authOpen, setAuthOpen] = React.useState(false)
+  const { isAuthenticated, isLoading, user } = useSelector((state: RootState) => state.auth)
 
   return (
     <header className="sticky top-0 z-50 bg-background">
@@ -42,19 +52,28 @@ export default function SiteHeader() {
           </div>
 
           <div className="flex items-center gap-2">
-            <Dialog open={authOpen} onOpenChange={setAuthOpen}>
-              <DialogTrigger asChild>
-                <Button
-                  className="h-7 rounded-sm px-4 text-xs font-medium text-[var(--brand-foreground)] transition transform duration-300 ease-in-out hover:scale-105 hover:brightness-110"
-                  style={{ background: "var(--brand)" }}
-                >
-                  Sign In
-                </Button>
+            {isAuthenticated ?
+              <Button
+                className="h-7 rounded-sm px-4 text-xs font-medium text-[var(--brand-foreground)] transition transform duration-300 ease-in-out hover:scale-105 hover:brightness-110"
+                style={{ background: "var(--brand)" }}
+                onClick={() => router.push("/user")}
+              >
+                Dashboard
+              </Button>
+              :
+              <Dialog open={authOpen} onOpenChange={setAuthOpen}>
+                <DialogTrigger asChild>
+                  <Button
+                    className="h-7 rounded-sm px-4 text-xs font-medium text-[var(--brand-foreground)] transition transform duration-300 ease-in-out hover:scale-105 hover:brightness-110"
+                    style={{ background: "var(--brand)" }}
+                  >
+                    Sign In
+                  </Button>
 
-              </DialogTrigger>
-              {/* <SignupDialog open={authOpen} onOpenChange={setAuthOpen} /> */}
-              <GetStartedModal isOpen={authOpen} onClose={() => setAuthOpen(false)} />
-            </Dialog>
+                </DialogTrigger>
+                {/* <SignupDialog open={authOpen} onOpenChange={setAuthOpen} /> */}
+                <GetStartedModal isOpen={authOpen} onClose={() => setAuthOpen(false)} />
+              </Dialog>}
 
             <Sheet open={drawerOpen} onOpenChange={setDrawerOpen}>
               <SheetTrigger asChild>
@@ -70,9 +89,9 @@ export default function SiteHeader() {
                   <SheetTitle>Menu</SheetTitle>
                 </SheetHeader>
                 <nav className="mt-4 grid gap-1">
-                  {menus.map((m) => (
-                    <Link key={m} href={`/${m}`} className="rounded px-2 py-2 hover:bg-muted">
-                      {m}
+                  {menus.map((m: MenuType) => (
+                    <Link key={m.lable} href={`/${m.url}`} className="rounded px-2 py-2 hover:bg-muted">
+                      {m.lable}
                     </Link>
                   ))}
                 </nav>
@@ -84,20 +103,20 @@ export default function SiteHeader() {
 
       <div className="hidden bg-[var(--subtle)] sm:block">
         <nav className="mx-auto flex h-10 max-w-6xl items-center justify-end gap-6 px-3 sm:px-4">
-          {menus.map((m) => (
-            <Link key={m} className="text-xs text-muted-foreground hover:underline " href={`/${m}`}>
-              {m}
+          {menus.map((m: MenuType) => (
+            <Link key={m.lable} className="text-xs text-muted-foreground hover:underline " href={`/${m.url}`}>
+              {m.lable}
             </Link>
           ))}
         </nav>
       </div>
 
-      <MobileBottomDrawer menus={menus} />
+      <MobileBottomDrawer menus={menuMobile} />
     </header>
   )
 }
 
-function MobileBottomDrawer({ menus }: { menus: string[] }) {
+function MobileBottomDrawer({ menus }: { menus: MenuType[] }) {
   const [open, setOpen] = React.useState(false)
 
   return (
@@ -122,9 +141,9 @@ function MobileBottomDrawer({ menus }: { menus: string[] }) {
         <SheetContent side="bottom" className="h-[60vh] rounded-t-2xl">
           <div className="mx-auto mt-2 h-1.5 w-12 rounded-full bg-muted" aria-hidden="true" />
           <nav className="mt-4 grid gap-2">
-            {menus.map((m) => (
-              <Link key={m} href="#" className="rounded px-2 py-3 text-base hover:bg-muted">
-                {m}
+            {menus.map((m: MenuType) => (
+              <Link key={m.lable} href="#" className="rounded px-2 py-3 text-base hover:bg-muted">
+                {m.lable}
               </Link>
             ))}
           </nav>

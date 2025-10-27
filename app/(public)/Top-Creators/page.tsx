@@ -10,158 +10,32 @@ import BottomNav from "@/components/creators/bottom-nav"
 import InquiryModal from "@/components/creators/inquiry-modal"
 import CreatorDetailsModal from "@/components/creators/creator-details-modal"
 import { useIsMobile } from "@/hooks/use-mobile"
-
+import { useTalentList } from "@/hooks/use-user"
+import { PublicTalentItem } from "@/lib/redux/features/user/userSlice"
+import Loader from "@/components/shared/Loader"
+import { RootState } from "@/lib/redux/store"
+import { useSelector } from "react-redux"
 const CREATORS_PER_PAGE = 8
 
-const mockCreators = [
-  {
-    id: 1,
-    name: "Mark ",
-    followers: "21.3K",
-    category: "Beauty",
-    rating: 5,
-    image: "/creators/creator-profile-1.jpg",
-    tags: ["Beauty", "Fashion", "Travel"],
-  },
-  {
-    id: 2,
-    name: "Dimple",
-    followers: "105.8K",
-    category: "Fashion",
-    rating: 4,
-    image: "/creators/creator-profile-2.jpg",
-    tags: ["Fashion", "Lifestyle", "Travel"],
-  },
-  {
-    id: 3,
-    name: "Vaishali",
-    followers: "22.7K",
-    category: "Lifestyle",
-    rating: 5,
-    image: "/creators/creator-profile-3.jpg",
-    tags: ["Entertainment", "Traveling", "Fashion"],
-  },
-  {
-    id: 4,
-    name: "Vaishali",
-    followers: "22.7K",
-    category: "Lifestyle",
-    rating: 5,
-    image: "/creators/creator-profile-4.jpg",
-    tags: ["Entertainment", "Traveling", "Fashion"],
-  },
-  {
-    id: 5,
-    name: "Subnaree",
-    followers: "21.3K",
-    category: "Beauty",
-    rating: 4,
-    image: "/creator-profile-5.jpg",
-    tags: ["Beauty", "Fashion", "Travel"],
-  },
-  {
-    id: 6,
-    name: "Dimple",
-    followers: "105.8K",
-    category: "Fashion",
-    rating: 5,
-    image: "/creators/creator-profile-6.jpg",
-    tags: ["Fashion", "Lifestyle", "Travel"],
-  },
-  {
-    id: 7,
-    name: "Vaishali",
-    followers: "22.7K",
-    category: "Lifestyle",
-    rating: 3,
-    image: "/creators/creator-profile-7.jpg",
-    tags: ["Entertainment", "Traveling", "Fashion"],
-  },
-  {
-    id: 8,
-    name: "Vaishali",
-    followers: "22.7K",
-    category: "Lifestyle",
-    rating: 4,
-    image: "/creators/creator-profile-8.jpg",
-    tags: ["Entertainment", "Traveling", "Fashion"],
-  },
-  {
-    id: 9,
-    name: "Subnaree",
-    followers: "21.3K",
-    category: "Beauty",
-    rating: 5,
-    image: "/creators/creator-profile-9.jpg",
-    tags: ["Beauty", "Fashion", "Travel"],
-  },
-  {
-    id: 10,
-    name: "Dimple",
-    followers: "105.8K",
-    category: "Fashion",
-    rating: 4,
-    image: "/creators/creator-profile-10.jpg",
-    tags: ["Fashion", "Lifestyle", "Travel"],
-  },
-  {
-    id: 11,
-    name: "Vaishali",
-    followers: "22.7K",
-    category: "Lifestyle",
-    rating: 5,
-    image: "/creators/creator-profile-11.jpg",
-    tags: ["Entertainment", "Traveling", "Fashion"],
-  },
-  {
-    id: 12,
-    name: "Vaishali",
-    followers: "22.7K",
-    category: "Lifestyle",
-    rating: 4,
-    image: "/creators/placeholder-xaiii.png",
-    tags: ["Entertainment", "Traveling", "Fashion"],
-  },
-  {
-    id: 13,
-    name: "Subnaree",
-    followers: "21.3K",
-    category: "Beauty",
-    rating: 5,
-    image: "/creators/creator-profile-13.jpg",
-    tags: ["Beauty", "Fashion", "Travel"],
-  },
-  {
-    id: 14,
-    name: "Dimple",
-    followers: "105.8K",
-    category: "Fashion",
-    rating: 3,
-    image: "/creators/creator-profile-14.jpg",
-    tags: ["Fashion", "Lifestyle", "Travel"],
-  },
-  {
-    id: 15,
-    name: "Vaishali",
-    followers: "22.7K",
-    category: "Lifestyle",
-    rating: 5,
-    image: "/creators/creator-profile-15.jpg",
-    tags: ["Entertainment", "Traveling", "Fashion"],
-  },
-  {
-    id: 16,
-    name: "Vaishali",
-    followers: "22.7K",
-    category: "Lifestyle",
-    rating: 4,
-    image: "/creators/placeholder.svg?height=300&width=300",
-    tags: ["Entertainment", "Traveling", "Fashion"],
-  },
-]
+function transformTalentToCreator(talent: PublicTalentItem) {
+  return {
+    id: talent.id,
+    name: talent.display_name,
+    followers: talent.followers > 0 ? `${(talent.followers / 1000).toFixed(1)}K` : "0",
+    category: talent.talent_type || talent.categories[0] || "Creator",
+    rating: talent.verify_badge ? 5 : Math.floor(Math.random() * 2) + 4, // 4-5 rating
+    image: talent.profile_image_url || "/placeholder.svg",
+    tags: talent.specializations.length > 0 ? talent.specializations : talent.categories.slice(0, 3),
+    bio: talent.bio,
+    location: talent.location,
+    experienceLevel: talent.experience_level,
+    rates: talent.rates,
+    verifyBadge: talent.verify_badge
+  }
+}
 
-interface Creator {
-  id: number
+export interface Creator {
+  id: string
   name: string
   followers: string
   category: string
@@ -179,32 +53,56 @@ export default function Home() {
   const [selectedRating, setSelectedRating] = useState(0)
   const [currentPage, setCurrentPage] = useState(1)
   const [activeNav, setActiveNav] = useState("explore")
-
   const [inquiryModalOpen, setInquiryModalOpen] = useState(false)
   const [selectedCreatorForInquiry, setSelectedCreatorForInquiry] = useState<Creator | null>(null)
   const [detailsModalOpen, setDetailsModalOpen] = useState(false)
   const [selectedCreatorForDetails, setSelectedCreatorForDetails] = useState<Creator | null>(null)
+  const { talents } = useTalentList(true)
+
+  const { publicTalents, talentsPagination, isLoading, error } = useSelector(
+    (state: RootState) => state.users
+  );
+  
+
+  const creators = publicTalents.map(transformTalentToCreator)
 
   const categories = [
-    "All Categories",
+    "Bollywood",
+    "Haryanavi",
+    "Bhojpuri",
+    "Actor",
+    "Model",
+    "Writer",
+    "Dancer",
+    "Singer",
+    "Standup",
+    "Voice Over",
+    "Anchors",
+    "Poetry",
+    "Fitness",
+    "Lifestyle",
     "Beauty",
-    "Bloggers",
-    "Fashion",
-    "Foods",
-    "Gamers",
-    "Life Styles",
-    "Modeling",
+    "Education",
+    "Finance",
+    "Sports",
+    "Yoga",
+    "Spritual",
+    "Speaker",
+    "Gadget",
+    "Gaming",
+    "Real Estate",
+    "Finance ",
     "Parenting",
-    "Pets",
-    "Photography",
-    "Sports and Fitness",
+    "Cooking",
+    "Food",
+    "Podcast",
     "Travel",
-    "Vloggers",
+    "Vlogger"
   ]
   const cities = ["All", "Mumbai", "Delhi", "Bangalore", "Hyderabad", "Chennai"]
 
   const filteredCreators = useMemo(() => {
-    let filtered = mockCreators
+    let filtered = creators
 
     // Search filter
     if (searchQuery) {
@@ -229,11 +127,11 @@ export default function Home() {
     if (sortBy === "popular") {
       filtered.sort((a, b) => Number.parseInt(b.followers) - Number.parseInt(a.followers))
     } else if (sortBy === "newest") {
-      filtered.sort((a, b) => b.id - a.id)
+      // filtered.sort((a, b) => b.id - a.id)
     } else if (sortBy === "rating") {
       filtered.sort((a, b) => b.rating - a.rating)
     } else if (sortBy === "active") {
-      filtered.sort((a, b) => a.id - b.id)
+      // filtered.sort((a, b) => a.id - b.id)
     }
 
     return filtered
@@ -272,6 +170,11 @@ export default function Home() {
       ...data,
     })
     // Here you would typically send this to your backend
+  }
+
+  if (isLoading || publicTalents.length === 0) {
+
+    return <Loader />
   }
 
   return (

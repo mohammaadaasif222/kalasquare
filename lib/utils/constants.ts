@@ -33,13 +33,14 @@ export const AUTH_ROUTES = ['/login', '/register'];
 
 export const API_ENDPOINTS = {
   LOGIN: '/auth/login',
+  UPDATE_PASSWORD: '/auth/password-update',
   GOOGLE_LOGIN: '/auth/google',
   REGISTER: '/auth/register',
   LOGOUT: '/auth/logout',
   ME: '/user',
   REFRESH_TOKEN: '/auth/refresh',
-  CREATE_PROFILE:'/profiles',
-  GET_PROFILE:'/profiles',
-  UPDATE_PROFILE:'/profiles',
-  DELETE_PROFILE:'/profiles'
+  CREATE_PROFILE:'/profile',
+  GET_PROFILE:'/profile',
+  UPDATE_PROFILE:'/profile',
+  DELETE_PROFILE:'/profile'
 };

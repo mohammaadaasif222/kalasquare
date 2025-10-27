@@ -7,7 +7,11 @@ interface MobileNavProps {
   activeNav: string
   setActiveNav: (nav: string) => void
 }
-
+interface MenuItem {
+  id: string,
+  label: string,
+  icon: React.ReactNode
+}
 export default function MobileNav({ activeNav, setActiveNav }: MobileNavProps) {
   const menuItems = [
     { id: "dashboard", label: "Home", icon: Home },
