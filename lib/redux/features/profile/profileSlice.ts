@@ -1,15 +1,16 @@
-// store/slices/profileSlice.ts
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import axiosInstance from '@/lib/api/axios';
-import { CreateProfileData,  UpdateProfileData, UserProfile } from '@/types/profile.types';
+import { CreateProfileData, UpdateProfileData } from '@/types/profile.types';
 import * as profileAPI from './profileAPI';
-interface ProfileState{
-  profile: {} | null
-  profiles:UserProfile[]
-  loading:boolean,
-  error:null | {}
+import { UserProfile } from '@/types/profile';
 
+interface ProfileState {
+  profile: UserProfile | null;
+  profiles: UserProfile[];
+  loading: boolean;
+  error: null | string;
 }
+
 const initialState: ProfileState = {
   profile: null,
   profiles: [],
@@ -17,57 +18,62 @@ const initialState: ProfileState = {
   error: null,
 };
 
-// Async Thunks
-export const createProfile = createAsyncThunk(
+// ✅ Create Profile
+export const createProfile = createAsyncThunk<UserProfile, CreateProfileData>(
   'profile/create',
-  async (data: CreateProfileData, { rejectWithValue }) => {
+  async (data, { rejectWithValue }) => {
     try {
       const result = await profileAPI.create(data);
-      return result;
+      return result as UserProfile;
     } catch (error: any) {
       return rejectWithValue(error.response?.data?.message || 'Failed to create profile');
     }
   }
 );
 
-export const fetchProfileByUserId = createAsyncThunk(
+// ✅ Fetch Profile by User ID
+export const fetchProfileByUserId = createAsyncThunk<UserProfile, string>(
   'profile/fetchByUserId',
-  async (userId: string, { rejectWithValue }) => {
+  async (userId, { rejectWithValue }) => {
     try {
       const result = await profileAPI.getProfile(userId);
-      return result;
-    } catch (error: any) {
-      return rejectWithValue(error.response?.data?.message || 'Failed to fetch profile');
-    }
-  }
-);
-export const fetchProfile = createAsyncThunk(
-  'profile/fetchProfile',
-  async (_, { rejectWithValue }) => {
-    try {
-      const result = await profileAPI.getMe();
-      return result;
+      return result as UserProfile;
     } catch (error: any) {
       return rejectWithValue(error.response?.data?.message || 'Failed to fetch profile');
     }
   }
 );
 
-export const updateProfile = createAsyncThunk(
+// ✅ Fetch Logged-in User Profile
+export const fetchProfile = createAsyncThunk<UserProfile>(
+  'profile/fetchProfile',
+  async (_, { rejectWithValue }) => {
+    try {
+      const result = await profileAPI.getMe();
+      return result as UserProfile;
+    } catch (error: any) {
+      return rejectWithValue(error.response?.data?.message || 'Failed to fetch profile');
+    }
+  }
+);
+
+// ✅ Update Profile
+export const updateProfile = createAsyncThunk<UserProfile, { userId: string; data: UpdateProfileData }>(
   'profile/update',
-  async ({ userId, data }: { userId: string; data: UpdateProfileData }, { rejectWithValue }) => {
+  async ({ userId, data }, { rejectWithValue }) => {
     try {
       const result = await profileAPI.update(userId, data);
-      return result;
+      return result as UserProfile;
     } catch (error: any) {
       return rejectWithValue(error.response?.data?.message || 'Failed to update profile');
     }
   }
 );
 
-export const deleteProfile = createAsyncThunk(
+// ✅ Delete Profile
+export const deleteProfile = createAsyncThunk<string, string>(
   'profile/delete',
-  async (userId: string, { rejectWithValue }) => {
+  async (userId, { rejectWithValue }) => {
     try {
       await axiosInstance.delete(`/profiles/${userId}`);
       return userId;
@@ -77,12 +83,13 @@ export const deleteProfile = createAsyncThunk(
   }
 );
 
-export const searchProfiles = createAsyncThunk(
+// ✅ Search Profiles
+export const searchProfiles = createAsyncThunk<UserProfile[], { city?: string; state?: string; country?: string; display_name?: string }>(
   'profile/search',
-  async (filters: { city?: string; state?: string; country?: string; display_name?: string }, { rejectWithValue }) => {
+  async (filters, { rejectWithValue }) => {
     try {
       const response = await axiosInstance.get('/profiles/search', { params: filters });
-      return response.data;
+      return response.data as UserProfile[];
     } catch (error: any) {
       return rejectWithValue(error.response?.data?.message || 'Failed to search profiles');
     }
@@ -117,7 +124,8 @@ const profileSlice = createSlice({
         state.loading = false;
         state.error = action.payload as string;
       })
-      // Fetch Profile
+
+      // Fetch Profile by User ID
       .addCase(fetchProfileByUserId.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -130,6 +138,8 @@ const profileSlice = createSlice({
         state.loading = false;
         state.error = action.payload as string;
       })
+
+      // Fetch Logged-in Profile
       .addCase(fetchProfile.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -142,6 +152,7 @@ const profileSlice = createSlice({
         state.loading = false;
         state.error = action.payload as string;
       })
+
       // Update Profile
       .addCase(updateProfile.pending, (state) => {
         state.loading = true;
@@ -155,6 +166,7 @@ const profileSlice = createSlice({
         state.loading = false;
         state.error = action.payload as string;
       })
+
       // Delete Profile
       .addCase(deleteProfile.pending, (state) => {
         state.loading = true;
@@ -168,6 +180,7 @@ const profileSlice = createSlice({
         state.loading = false;
         state.error = action.payload as string;
       })
+
       // Search Profiles
       .addCase(searchProfiles.pending, (state) => {
         state.loading = true;

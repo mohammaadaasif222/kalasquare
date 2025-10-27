@@ -14,14 +14,15 @@ import { RootState } from "@/lib/redux/store"
 import { useSelector } from "react-redux"
 import { useEffect } from "react"
 import { EditableProfile } from "@/components/user/editable-profile"
+import Loader from "@/components/shared/Loader"
 
 export default function Dashboard() {
     const { activeNav, setActiveNav } = useUserNav()
     const showProfileUpdate = activeNav === "edit-profile"
-    const { profile, loading: profileLoading, updateProfile, fetchProfile } = useProfile()
-    const { talent, updateTalent, fetchTalentByUserId } = useTalent()
+    const { profile, loading: profileLoading, fetchProfile } = useProfile()
+    const { talent, fetchTalentByUserId } = useTalent()
     const auth = useSelector((state: RootState) => state.auth.user)
-
+    console.log(profile)
     useEffect(() => {
         if (auth?.id) {
             fetchTalentByUserId(auth.id)
@@ -29,8 +30,8 @@ export default function Dashboard() {
         }
     }, [auth?.id])
 
-    if(!talent){
-        return null
+    if (!talent || !profile) {
+        return <Loader/>
     }
     return (
         <div >

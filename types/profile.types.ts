@@ -8,7 +8,8 @@ export interface UserProfile {
   display_name?: string
   bio?: string
   dob?: string
-  gender?: string
+  gender?: string,
+  highest_education: string
   profile_image_url?: string
   banner_image_url?: string
   location_city?: string

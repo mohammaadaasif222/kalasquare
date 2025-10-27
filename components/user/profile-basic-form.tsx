@@ -23,13 +23,15 @@ export function ProfileBasicForm({ profile, onSubmit, isLoading, onCancel }: Pro
   const [bannerImagePreview, setBannerImagePreview] = useState(profile.banner_image_url || "")
   const [uploadingProfile, setUploadingProfile] = useState(false)
   const [uploadingBanner, setUploadingBanner] = useState(false)
-  
+
   const [formData, setFormData] = useState<UpdateProfileData>({
     first_name: profile.first_name || "",
     last_name: profile.last_name || "",
     display_name: profile.display_name || "",
     bio: profile.bio || "",
     whatsapp: profile.whatsapp || "",
+    dob: profile.dob || "",
+    cintaId: profile.cintaId || "",
     website_url: profile.website_url || "",
     location_city: profile.location_city || "",
     location_state: profile.location_state || "",
@@ -40,13 +42,16 @@ export function ProfileBasicForm({ profile, onSubmit, isLoading, onCancel }: Pro
     banner_image_url: profile.banner_image_url || "",
   })
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target
-    setFormData((prev) => ({
-      ...prev,
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+  ) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
       [name]: value,
-    }))
-  }
+    });
+  };
+
 
   const handleProfileImageUpload = async (url: string) => {
     setUploadingProfile(true)
@@ -136,6 +141,45 @@ export function ProfileBasicForm({ profile, onSubmit, isLoading, onCancel }: Pro
             onChange={handleChange}
             placeholder="Enter last name"
           />
+        </div>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="space-y-2">
+          <Label htmlFor="first_name">Cinata ID</Label>
+          <Input
+            id="cintaId"
+            name="cintaId"
+            value={formData.cintaId}
+            onChange={handleChange}
+            placeholder="Enter Your ID "
+          />
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="dob">Date Of Birth</Label>
+          <Input
+            id="dob"
+            name="dob"
+            type="date"
+            value={formData.dob}
+            onChange={handleChange}
+            placeholder="Enter last name"
+          />
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="gender">Gender</Label>
+          <select
+            id="gender"
+            name="gender"
+            value={formData.gender}
+            onChange={handleChange}
+            className="w-full px-3 py-2 border border-input rounded-md bg-background text-foreground"
+          >
+            <option value="">Select level</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Others">Otjers</option>
+
+          </select>
         </div>
       </div>
 
