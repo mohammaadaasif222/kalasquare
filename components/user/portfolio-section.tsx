@@ -345,17 +345,9 @@ export default function PortfolioSection({ talentProfileId }: WorkSampleManagerP
           {workSamples.map((sample) => (
             <div key={sample.id} className="bg-white rounded-md  transition-all duration-300 border border-gray-200 overflow-hidden group">
               <div className="">
-                {/* <div className="flex items-start justify-between mb-3">
-                  <h3 className="text-lg font-bold text-gray-900 line-clamp-2 flex-1">{sample.title || 'Untitled'}</h3>
-                </div> */}
-
-                {/* <div className="flex flex-wrap gap-2 mb-4">
-                  <span className={`px-3 py-1 rounded-full text-xs font-medium ${getTypeColor(sample.type)}`}>{sample.type}</span>
-                  <span className={`px-3 py-1 rounded-full text-xs font-medium border ${getStatusColor(sample.status)}`}>{sample.status}</span>
-                </div> */}
-
+              
                 {sample.url && (
-                  <div className="mb-4">
+                  <div className="">
                     {/* 🖼️ Image */}
                     {isImageUrl(sample.url) && (
                       <img
@@ -418,13 +410,11 @@ export default function PortfolioSection({ talentProfileId }: WorkSampleManagerP
                 )}
 
 
-                <div className="flex gap-2 pt-4 border-t border-gray-100">
+                {/* <div className="flex gap-2 pt-4 border-t border-gray-100">
                   <button onClick={() => handleEdit(sample)} className="flex-1 px-3 py-2 bg-blue-50 text-blue-700 rounded-lg hover:bg-blue-100 transition-colors text-sm font-medium">Edit</button>
-                  {/* {sample.status === 'pending' && (
-                    <button onClick={() => handleStatusChange(sample.id, 'approved')} className="flex-1 px-3 py-2 bg-green-50 text-green-700 rounded-lg hover:bg-green-100 transition-colors text-sm font-medium">Approve</button>
-                  )} */}
+                  
                   <button onClick={() => handleDelete(sample.id)} className="px-3 py-2 bg-red-50 text-red-700 rounded-lg hover:bg-red-100 transition-colors text-sm font-medium">Delete</button>
-                </div>
+                </div> */}
               </div>
             </div>
           ))}

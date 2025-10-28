@@ -72,7 +72,6 @@ const ProfileCard: React.FC = () => {
               height={20}
               className="object-contain"
             />
-
           </div>
         </div>
         <span className="text-[var(--brand)] m-auto text-xs leading-tight px-3 bg-gray-2  00 rounded-full mb-2">

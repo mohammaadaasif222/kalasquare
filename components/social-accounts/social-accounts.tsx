@@ -15,9 +15,8 @@ interface Props {
 }
 
 
-const SocialAccountsManager: React.FC<Props> = () => {
-  const { talent, fetchTalentByUserId } = useTalent()
-  const { user } = useSelector((state: any) => state.auth)
+const SocialAccountsManager: React.FC<Props> = ({ talentProfileId }: Props) => {
+ 
   const {
     accounts,
     loading,
@@ -29,7 +28,7 @@ const SocialAccountsManager: React.FC<Props> = () => {
     deleteAccount,
     setPrimary,
     clearAllMessages,
-  } = useSocials(talent?.id)
+  } = useSocials(talentProfileId)
 
   const [isFormOpen, setIsFormOpen] = useState(false)
   const [editingId, setEditingId] = useState<string | null>(null)
@@ -44,20 +43,16 @@ const SocialAccountsManager: React.FC<Props> = () => {
     is_primary: false,
   })
 
-  useEffect(() => {
-    if (user?.id) {
-      fetchTalentByUserId(user.id)
-    }
-  }, [user?.id])
+
 
   useEffect(() => {
-    if (talent?.id) {
+    if (talentProfileId) {
       setFormData((prev) => ({
         ...prev,
-        talent_profile_id: talent.id,
+        talent_profile_id: talentProfileId,
       }))
     }
-  }, [talent?.id])
+  }, [talentProfileId])
 
   useEffect(() => {
     if (success || error) {
@@ -69,14 +64,14 @@ const SocialAccountsManager: React.FC<Props> = () => {
   }, [success, error, clearAllMessages])
 
   const handleSubmit = async () => {
-    if (!talent?.id) {
+    if (!talentProfileId) {
       console.error("Talent ID is not available")
       return
     }
 
     const dataToSubmit = {
       ...formData,
-      talent_profile_id: talent.id,
+      talent_profile_id:talentProfileId,
     }
 
     if (editingId) {
@@ -87,13 +82,13 @@ const SocialAccountsManager: React.FC<Props> = () => {
     }
 
     resetForm()
-    loadAccounts(talent.id)
+    loadAccounts(talentProfileId)
   }
 
   const handleEdit = (account: any) => {
     setEditingId(account.id)
     setFormData({
-      talent_profile_id: talent?.id ?? "",
+      talent_profile_id: talentProfileId?? "",
       handle: account.handle,
       profile_url: account.profile_url,
       followers_count: account.followers_count,
@@ -107,16 +102,16 @@ const SocialAccountsManager: React.FC<Props> = () => {
   const handleDelete = async (id: string) => {
     if (confirm("Are you sure you want to delete this social account?")) {
       await deleteAccount(id)
-      if (talent?.id) {
-        loadAccounts(talent.id)
+      if (talentProfileId) {
+        loadAccounts(talentProfileId)
       }
     }
   }
 
   const handleSetPrimary = async (id: string) => {
     await setPrimary(id)
-    if (talent?.id) {
-      loadAccounts(talent.id)
+    if (talentProfileId) {
+      loadAccounts(talentProfileId)
     }
   }
 
@@ -124,7 +119,7 @@ const SocialAccountsManager: React.FC<Props> = () => {
     setIsFormOpen(false)
     setEditingId(null)
     setFormData({
-      talent_profile_id: talent?.id ?? "",
+      talent_profile_id: talentProfileId ?? "",
       platform: Platform.INSTAGRAM,
       handle: "",
       profile_url: "",
@@ -135,7 +130,7 @@ const SocialAccountsManager: React.FC<Props> = () => {
     })
   }
 
-  if (!talent) {
+  if (!talentProfileId) {
     return (
       <div className="max-w-7xl mx-auto p-6 flex justify-center items-center py-12">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
@@ -380,19 +375,6 @@ const SocialAccountsManager: React.FC<Props> = () => {
                 </div>
               </div>
 
-              <div className="flex items-center gap-3 p-3 bg-blue-50 rounded-lg border border-blue-200">
-                <input
-                  type="checkbox"
-                  id="is_verified"
-                  checked={formData.is_verified || false}
-                  onChange={(e) => setFormData({ ...formData, is_verified: e.target.checked })}
-                  className="w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 cursor-pointer"
-                />
-                <label htmlFor="is_verified" className="text-sm font-medium text-gray-700 cursor-pointer">
-                  Mark as Verified
-                </label>
-              </div>
-
               <div className="flex gap-3 pt-2">
                 <button
                   onClick={resetForm}
@@ -403,7 +385,7 @@ const SocialAccountsManager: React.FC<Props> = () => {
                 <button
                   onClick={handleSubmit}
                   disabled={loading || !formData.handle || !formData.profile_url}
-                  className="flex-1 px-4 py-2.5 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-lg hover:shadow-lg hover:from-blue-700 hover:to-blue-800 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed font-medium text-sm"
+                  className="flex-1 px-4 py-2.5 bg-gradient-to-r from-[var(--brand)] to-[var(--brand)]/80 text-white rounded-lg hover:shadow-lg hover:from-from-[var(--brand)] hover:to-from-[var(--brand)]/70 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed font-medium text-sm"
                 >
                   {loading ? "Saving..." : editingId ? "Update" : "Create"}
                 </button>

@@ -9,7 +9,7 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/co
 import { Dialog, DialogTrigger } from "@/components/ui/dialog"
 import { Separator } from "@/components/ui/separator"
 import { cn } from "@/lib/utils"
-import { MapPin, Menu } from "lucide-react"
+import { MapPin, Menu, User, User2 } from "lucide-react"
 import { SignupDialog } from "./signup-dialog"
 import Image from "next/image"
 import GetStartedModal from "../models/get-started-modal"
@@ -53,13 +53,12 @@ export default function SiteHeader() {
 
           <div className="flex items-center gap-2">
             {isAuthenticated ?
-              <Button
-                className="h-7 rounded-sm px-4 text-xs font-medium text-[var(--brand-foreground)] transition transform duration-300 ease-in-out hover:scale-105 hover:brightness-110"
-                style={{ background: "var(--brand)" }}
+              <button
+                className="rounded-sm  text-gray-600 cursor-pointer transition transform duration-300 ease-in-out hover:scale-105 hover:brightness-110"
                 onClick={() => router.push("/user")}
               >
-                Dashboard
-              </Button>
+                <User2  className="h-6 w-6"/>
+              </button>
               :
               <Dialog open={authOpen} onOpenChange={setAuthOpen}>
                 <DialogTrigger asChild>

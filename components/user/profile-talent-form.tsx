@@ -331,9 +331,9 @@ export function ProfileTalentForm({ talent, onSubmit, isLoading, onCancel }: Pro
 
       {/* Portfolio & Achievements */}
       <div className="space-y-4">
-        <h3 className="font-semibold">Portfolio & Achievements</h3>
+        <h3 className="font-semibold">About & Achievements</h3>
         <div className="space-y-2">
-          <Label htmlFor="portfolio_description">Portfolio Description</Label>
+          <Label htmlFor="portfolio_description">About</Label>
           <Textarea
             id="portfolio_description"
             name="portfolio_description"

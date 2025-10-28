@@ -67,7 +67,7 @@ export default function CreatorGrid({ creators, onTalkToCreator, onCreatorDouble
 
             {/* Tags */}
             <div className="flex flex-wrap gap-1">
-              {creator.tags.map((tag) => (
+              {creator.tags.slice(0,2).map((tag) => (
                 <span key={tag} className="text-xs bg-muted text-muted-foreground px-2 py-1 rounded">
                   {tag}
                 </span>
