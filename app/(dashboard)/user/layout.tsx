@@ -3,9 +3,35 @@ import { Settings, Bell, MessageSquare } from "lucide-react"
 import Sidebar from "@/components/user/sidebar"
 import MobileNav from "@/components/user/mobile-nav"
 import { UserNavProvider, useUserNav } from "@/context/UseNavContaxt"
+import { useSelectedUser } from "@/hooks/use-user"
+import { RootState } from "@/lib/redux/store"
+import { useSelector } from "react-redux"
+import { useRouter } from "next/navigation"
+import { useEffect } from "react"
+
 
 
 export default function Layout({ children }: { children: React.ReactNode }) {
+    const router = useRouter()
+    const { isAuthenticated, isLoading } = useSelector((state: RootState) => state.auth)
+
+    useEffect(() => {
+        if (!isLoading && !isAuthenticated) {
+            router.push("/")
+        }
+    }, [isAuthenticated, isLoading, router])
+
+    if (isLoading) {
+        return (
+            <div className="flex items-center justify-center h-screen">
+                <p className="text-lg font-medium">Loading...</p>
+            </div>
+        )
+    }
+
+    if (!isAuthenticated) {
+        return null // prevent flicker before redirect
+    }
     return (
         <UserNavProvider>
             <LayoutContent>{children}</LayoutContent>

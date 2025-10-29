@@ -25,7 +25,7 @@ interface EditableProfileProps {
 }
 
 export function EditableProfile({ profile, talent, userId }: EditableProfileProps) {
-  const [isEditing, setIsEditing] = useState(true)
+  const [isEditing, setIsEditing] = useState(false)
   const [editTab, setEditTab] = useState<"basic" | "talent">("basic")
   const { updateProfile, loading: profileLoading, error: profileError } = useProfile()
   const { updateTalent, loading: talentLoading, error: talentError } = useTalent()
@@ -93,7 +93,7 @@ export function EditableProfile({ profile, talent, userId }: EditableProfileProp
   return (
     <div className="w-full max-w-4xl mx-auto p-4">
       {/* View Mode */}
-        {/* {!isEditing && (
+        {!isEditing && (
           <Card className="border rounded-lg shadow-sm">
             <CardContent className="pt-8">
               <div className="flex flex-col md:flex-row gap-6 mb-8">
@@ -324,7 +324,7 @@ export function EditableProfile({ profile, talent, userId }: EditableProfileProp
               )}
             </CardContent>
           </Card>
-        )} */}
+        )}
 
       {isEditing && (
         <Card className="border rounded-lg shadow-sm">

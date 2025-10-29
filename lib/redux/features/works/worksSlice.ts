@@ -352,16 +352,26 @@ export const fetchWorkSampleById = createAsyncThunk(
 
 export const fetchWorkSamplesByTalentProfile = createAsyncThunk(
   'workSample/fetchByTalentProfile',
-  async (talentProfileId: string, { rejectWithValue }) => {
+  async (
+    {
+      talentProfileId,
+      queryParams = {},
+    }: { talentProfileId: string; queryParams?: Record<string, any> },
+    { rejectWithValue }
+  ) => {
     try {
-      const response = await axiosInstance.get(`/work-samples/talent/${talentProfileId}`);
-    
+      const response = await axiosInstance.get(
+        `/work-samples/talent/${talentProfileId}`,
+        { params: queryParams } // Axios handles query params automatically
+      );
+
       return response.data;
     } catch (error: any) {
-      return rejectWithValue(error.message);
+      return rejectWithValue(error.response?.data || error.message);
     }
   }
 );
+
 
 export const fetchWorkSamplesByType = createAsyncThunk(
   'workSample/fetchByType',

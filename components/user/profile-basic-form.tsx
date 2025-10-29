@@ -394,6 +394,7 @@ export function ProfileBasicForm({ profile, onSubmit, isLoading, onCancel }: Pro
     website_url: profile.website_url || "",
     location_city: profile.location_city || "",
     location_state: profile.location_state || "",
+    pin_code: profile.pin_code || "",
     location_country: "India",
     languages: profile.languages || "",
     highest_education: profile.highest_education || "",
@@ -645,6 +646,19 @@ export function ProfileBasicForm({ profile, onSubmit, isLoading, onCancel }: Pro
                 </option>
               ))}
             </select>
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="location_city">Pin Code</Label>
+            <Input
+              id="pin_code"
+              name="pin_code"
+              value={formData.pin_code}
+              onChange={handleChange}
+              disabled={!formData.pin_code}
+              className="w-full px-3 py-2 border border-input rounded-md bg-background text-foreground disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+            
+            </Input>
           </div>
           <div className="space-y-2">
             <Label htmlFor="location_country">Country</Label>

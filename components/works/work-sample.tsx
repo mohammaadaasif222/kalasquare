@@ -21,7 +21,7 @@ export default function WorkSampleManager({ talentProfileId }: WorkSampleManager
 
   const loading = false;
   const error = null;
-
+  const [type, setType] = useState('video')
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
@@ -181,6 +181,7 @@ export default function WorkSampleManager({ talentProfileId }: WorkSampleManager
     }
   };
 
+  const filtred = workSamples.filter((item) => item.type === type)
   return (
     <div className="max-w-6xl mx-auto p-6">
       <div className="flex justify-between items-center mb-8">
@@ -190,7 +191,7 @@ export default function WorkSampleManager({ talentProfileId }: WorkSampleManager
         </div>
         <button
           onClick={() => setIsFormOpen(true)}
-          className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors shadow-lg hover:shadow-xl font-medium"
+          className="px-6 py-3 bg-[var(--brand)] text-white rounded hover:bg-[var(--brand)]/90 transition-colors shadow-lg hover:shadow-xl font-medium"
         >
           + Add Work Sample
         </button>
@@ -338,7 +339,7 @@ export default function WorkSampleManager({ talentProfileId }: WorkSampleManager
         </div>
       )}
 
-      {!loading && workSamples.length === 0 && (
+      {!loading && filtred.length === 0 && (
         <div className="text-center py-16 bg-gray-50 rounded-2xl border-2 border-dashed border-gray-300">
           <svg className="mx-auto h-16 w-16 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
@@ -348,9 +349,35 @@ export default function WorkSampleManager({ talentProfileId }: WorkSampleManager
         </div>
       )}
 
-      {!loading && workSamples.length > 0 && (
+      <div className="flex gap-5 items-center py-4 mb-3 border-b-2 ">
+        <button
+          onClick={() => setType('video')}
+          className={`px-6 py-3 rounded font-medium transition-all shadow  
+      ${type === 'video'
+              ? 'bg-[var(--brand)] text-white scale-105' // Active state
+              : 'bg-white text-[var(--brand)] hover:bg-[var(--brand)] hover:text-white' // Inactive state
+            }`}
+        >
+          Video
+        </button>
+
+        <button
+          onClick={() => setType('image')}
+          className={`px-6 py-3 rounded font-medium transition-all shadow hover:shadow-xl 
+      ${type === 'image'
+              ? 'bg-[var(--brand)] text-white scale-105' // Active state
+              : 'bg-white text-[var(--brand)] hover:bg-[var(--brand)] hover:text-white'
+            }`}
+        >
+          Image Gallery
+        </button>
+      </div>
+
+
+
+      {!loading && filtred.length > 0 && (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {workSamples.map((sample) => (
+          {filtred.map((sample) => (
             <div key={sample.id} className="bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 border border-gray-200 overflow-hidden group">
               <div className="p-6">
                 <div className="flex items-start justify-between mb-3">

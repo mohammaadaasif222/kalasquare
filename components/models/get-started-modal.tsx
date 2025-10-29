@@ -2,6 +2,7 @@
 
 import { X, Mail, Apple } from "lucide-react"
 import GoogleAuth from "../auth/GoogleAuth"
+import { useRouter } from "next/navigation"
 
 interface GetStartedModalProps {
   isOpen: boolean
@@ -9,6 +10,7 @@ interface GetStartedModalProps {
 }
 
 export default function GetStartedModal({ isOpen, onClose }: GetStartedModalProps) {
+  const router = useRouter()
   if (!isOpen) return null
 
   return (
@@ -31,10 +33,10 @@ export default function GetStartedModal({ isOpen, onClose }: GetStartedModalProp
 
           {/* Primary Buttons */}
           <div className="flex gap-2 mb-8">
-            <button className="flex-1 bg-red-600 hover:bg-red-700 text-white font-semibold py-3 px-3 rounded-lg transition duration-200 text-xs">
+            <button onClick={() => router.push('/register')} className="flex-1 bg-[var(--brand)] hover:bg-[var(--brand)]/80 text-white font-semibold py-3 px-3 rounded-lg transition duration-200 text-xs">
               Register as Artist
             </button>
-            <button className="flex-1 border-2 border-red-600 text-red-600 hover:bg-red-50 font-semibold py-3 px-3 rounded-lg transition duration-200 text-xs">
+            <button onClick={() => router.push('/register')} className="flex-1 border-2 border-[var(--brand)] text-[var(--brand)] hover:bg-red-50 font-semibold py-3 px-3 rounded-lg transition duration-200 text-xs">
               Register as Brand
             </button>
           </div>
@@ -42,8 +44,8 @@ export default function GetStartedModal({ isOpen, onClose }: GetStartedModalProp
           {/* Social Login Options */}
           <div className="space-y-4 mb-4">
             {/* Google */}
-            <GoogleAuth/>
-          
+            <GoogleAuth />
+
             {/* Email */}
             <button className="w-full border border-gray-300 hover:border-gray-400 hover:bg-gray-50 text-gray-700 font-medium py-3 px-3 rounded-sm transition duration-200 flex items-center justify-center gap-2 text-sm">
               <Mail size={16} className="text-gray-600" />

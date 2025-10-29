@@ -6,6 +6,7 @@ import profileReducer from './features/profile/profileSlice';
 import talentReducer from './features/talent/talentSlice';
 import talentSocialReducer from './features/social/socialSlice'
 import worksReducer from './features/works/worksSlice'
+import bannerReducer from './features/banners/bannerSlice'
 export const makeStore = () => {
   return configureStore({
     reducer: {
@@ -14,7 +15,8 @@ export const makeStore = () => {
       profile: profileReducer,
       talent: talentReducer,
       socials: talentSocialReducer,
-      workSample:worksReducer
+      workSample: worksReducer,
+      banners: bannerReducer
     },
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware({

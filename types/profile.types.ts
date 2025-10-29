@@ -59,6 +59,7 @@ export interface UpdateProfileData {
   banner_image_url?: string
   location_city?: string
   location_state?: string
+  pin_code?:string
   location_country?: string
   website_url?: string
   languages?: any

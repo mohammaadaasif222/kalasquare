@@ -16,10 +16,15 @@ import { FeaturedEventsSection } from "@/components/home/featured-events"
 import LiveEventsSection from "@/components/home/live-events"
 import { Button } from "@/components/ui/button"
 import { VenuesSection } from "@/components/home/venues-section"
+import { useBanner } from "@/hooks/use-banner"
+import { useEffect } from "react"
+import { Skeleton } from "../ui/skeleton"
 
 
 
 export default function HomePageComponent() {
+  const { banners, loading, error, getBanners, addBanner, editBanner, removeBanner, clearBannerError } = useBanner();
+
   const actions = [
     { label: "Rising Digi Star", img: "/awards.webp" },
     { label: "Singing", img: "/fame.webp" },
@@ -53,89 +58,43 @@ export default function HomePageComponent() {
     { name: "Featured Host", role: "MC", img: "/artists/mc-on-stage.jpg" },
   ]
 
-  const venues = [
-    { name: "Comedy County", city: "Noida" },
-    { name: "The Live Stage", city: "East Delhi" },
-    { name: "Rosò Stage", city: "Mumbai" },
-    { name: "Addy's Club", city: "South Delhi" },
-  ]
-  const carouselImages = [
-    {
-      src: "https://kalasquare.com/frontend/images/craousel1.jpg",
-      alt: "Awards banner",
-    },
-    {
-      src: "https://kalasquare.com/frontend/images/craousel2.jpg",
-      alt: "Registration open",
-    },
-    {
-      src: "/event-poster.jpg",
-      alt: "Featured event",
-    },
-  ];
+  useEffect(() => {
+    getBanners();
+  }, []);
+
+  const carousels = banners?.filter((banner) => banner.type === 'TOP')
+  const act = banners?.filter((banner) => banner.type === 'CARD')
+  const bottomBanner = banners?.filter((banner) => banner.type === 'BOTTOM')
+
+
   return (
     <main className="pb-20 md:pb-8">
-      {/* <section className="container mx-auto px-0 pt-3 mt-5 group relative">
-        <Carousel opts={{ align: "center", loop: true, skipSnaps: false }} className="relative" aria-label="Highlights">
-          <CarouselContent className="px-0">
-            <CarouselItem className="basis-[88%] sm:basis-[70%]">
-              <div className="overflow-hidden rounded-xs border bg-card">
-                <img
-                  src="https://kalasquare.com/frontend/images/craousel1.jpg"
-                  alt="Awards banner"
-                  className="h-44 w-full object-cover md:h-64"
-                />
-              </div>
-            </CarouselItem>
-            <CarouselItem className="basis-[88%] sm:basis-[70%]">
-              <div className="overflow-hidden rounded-xs border bg-card">
-                <img
-                  src="https://kalasquare.com/frontend/images/craousel2.jpg"
-                  alt="Registration open"
-                  className="h-44 w-full object-cover md:h-64"
-                />
-              </div>
-            </CarouselItem>
-            <CarouselItem className="basis-[88%] sm:basis-[70%]">
-              <div className="overflow-hidden rounded-xs border bg-card">
-                <img
-                  src="/event-poster.jpg"
-                  alt="Featured event"
-                  className="h-44 w-full object-cover md:h-64"
-                />
-              </div>
-            </CarouselItem>
-          </CarouselContent>
-
-      
-          <div className="pointer-events-none absolute inset-0 hidden items-center justify-between px-1 sm:flex opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-            <div className="pointer-events-auto">
-              <CarouselPrevious className="left-2 bg-background/80" />
-            </div>
-            <div className="pointer-events-auto">
-              <CarouselNext className="right-2 bg-background/80" />
-            </div>
-          </div>
-        </Carousel>
-      </section> */}
-
+ 
       <section className="container mx-auto px-0 pt-3 mt-5 group relative">
         <Carousel opts={{ align: "center", loop: true, skipSnaps: false }} className="relative" aria-label="Highlights">
           <CarouselContent className="px-0">
-            {carouselImages.map((image, index) => (
-              <CarouselItem key={index} className="basis-[88%] sm:basis-[70%]">
-                <div className="overflow-hidden rounded-xs border bg-card">
-                  <img
-                    src={image.src}
-                    alt={image.alt}
-                    className="h-44 w-full object-cover md:h-64"
-                  />
-                </div>
-              </CarouselItem>
-            ))}
+            {loading
+              ? // Show 3 skeleton loaders
+              Array.from({ length: 3 }).map((_, index) => (
+                <CarouselItem key={`skeleton-${index}`} className="basis-[88%] sm:basis-[70%]">
+                  <div className="overflow-hidden rounded-xs border bg-card">
+                    {/* <Skeleton className="h-44 w-full md:h-64" /> */}
+                  </div>
+                </CarouselItem>
+              ))
+              : // Show actual carousel items
+              carousels?.sort((a, b) => a.position - b.position).map((image) => (
+                <CarouselItem key={image.id} className="basis-[88%] sm:basis-[70%]">
+                  <div className="overflow-hidden rounded-xs border bg-card">
+                    <img
+                      src={image.url || "/placeholder.svg"}
+                      alt={image.title}
+                      className="h-44 w-full object-cover md:h-64"
+                    />
+                  </div>
+                </CarouselItem>
+              ))}
           </CarouselContent>
-
-          {/* Navigation Arrows (show only on hover) */}
           <div className="pointer-events-none absolute inset-0 hidden items-center justify-between px-1 sm:flex opacity-0 group-hover:opacity-100 transition-opacity duration-300">
             <div className="pointer-events-auto">
               <CarouselPrevious className="left-2 bg-background/80" />
@@ -146,8 +105,7 @@ export default function HomePageComponent() {
           </div>
         </Carousel>
       </section>
-
-
+      
       <div className="max-w-6xl m-auto">
         <section className="container mx-auto px-4 py-8">
           <div className="mt-4 grid grid-cols-3 gap-4 sm:grid-cols-3 md:grid-cols-3 md:gap-6">

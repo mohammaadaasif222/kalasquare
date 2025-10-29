@@ -1,5 +1,4 @@
-// app/(public)/layout.tsx
-// import PublicNavbar from '@/components/layouts/PublicNavbar';
+
 import SiteHeader from "@/components/home/site-header"
 import SiteFooter from "@/components/home/site-footer"
 export default function PublicLayout({
@@ -15,3 +14,5 @@ export default function PublicLayout({
     </div>
   );
 }
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;

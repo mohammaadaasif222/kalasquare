@@ -55,12 +55,15 @@ export const useWorkSample = () => {
     );
 
     const fetchByTalentProfile = useCallback(
-        async (talentProfileId: string) => {
-            const result = await dispatch(fetchWorkSamplesByTalentProfile(talentProfileId));
+        async (talentProfileId: string, queryParams: Record<string, any> = {}) => {
+            const result = await dispatch(
+                fetchWorkSamplesByTalentProfile({ talentProfileId, queryParams })
+            );
             return result;
         },
         [dispatch]
     );
+
 
     const fetchByType = useCallback(
         async (type: WorkSampleType) => {

@@ -11,6 +11,8 @@ import Image from "next/image"
 import { useState } from "react"
 import Loader from "@/components/shared/Loader"
 import VideoSection from "@/components/creators/videos"
+import ImageGallery from "@/components/creators/image-gallery"
+import { ReviewSection } from "@/components/review/review-section"
 
 export default function TalentProfilePage() {
   const params = useParams()
@@ -43,8 +45,7 @@ export default function TalentProfilePage() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
           {/* Images Gallery */}
           <div className="lg:col-span-2">
-            <div className="grid grid-cols-4 gap-3 mb-6">
-              {/* Large featured image - spans 2 columns and 2 rows */}
+            {/* <div className="grid grid-cols-4 gap-3 mb-6">
               <div className="col-span-2 row-span-2 bg-gray-200 rounded-xs overflow-hidden shadow">
                 <img
                   src={profile.profile_image_url || "/placeholder.svg?height=400&width=400&query=profile banner"}
@@ -53,7 +54,6 @@ export default function TalentProfilePage() {
                 />
               </div>
 
-              {/* Top right image */}
               <div className="col-span-2 h-48 bg-gray-200 rounded-xs overflow-hidden shadow">
                 <img
                   src={profile.profile_image_url || "/placeholder.svg?height=192&width=384&query=gallery image"}
@@ -62,7 +62,6 @@ export default function TalentProfilePage() {
                 />
               </div>
 
-              {/* Bottom right - 2 equal images */}
               <div className="h-48 bg-gray-200 rounded-xs overflow-hidden shadow">
                 <img
                   src={profile.profile_image_url || "/placeholder.svg?height=192&width=192&query=gallery image"}
@@ -80,8 +79,8 @@ export default function TalentProfilePage() {
                   <span className="text-white text-sm font-semibold">View More</span>
                 </div>
               </div>
-            </div>
-
+            </div> */}
+            <ImageGallery talentProfileId={talentId} />
             {/* Tags */}
             <div className="flex flex-wrap gap-2">
               {["About", "Video", "Reels Work", "IMDB", "Portfolio", "Reviews", "Previous Campaigns", "Award"].map(
@@ -205,7 +204,7 @@ export default function TalentProfilePage() {
             </section>
 
             {/* Reviews Section */}
-            <section className="mb-12">
+            {/* <section className="mb-12">
               <h2 className="text-2xl font-bold mb-6 text-gray-900">Reviews</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {profile.recent_reviews && profile.recent_reviews.length > 0 ? (
@@ -230,7 +229,7 @@ export default function TalentProfilePage() {
                     <p className="text-gray-600">No reviews yet</p>
                   </Card>
                 )}
-                {/* Rating Summary Card */}
+                
                 <Card className="p-6 bg-[var(--brand)] text-white border-0 flex flex-col items-center justify-center">
                   <p className="text-4xl font-bold mb-2">5.0</p>
                   <div className="flex gap-1 mb-3">
@@ -245,7 +244,9 @@ export default function TalentProfilePage() {
                   </Button>
                 </Card>
               </div>
-            </section>
+            </section> */}
+
+            <ReviewSection />
 
             {/* Previous Campaigns Section */}
             <section className="mb-12">

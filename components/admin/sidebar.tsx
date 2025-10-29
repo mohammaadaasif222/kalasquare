@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { Users, Plus, Clock, Settings, ChevronDown, ChevronRight, Music, Calendar, DollarSign, BarChart3, FileText, Mail, Shield, Globe, LogOut } from "lucide-react"
+import { Users, Plus, Clock, Settings, ChevronDown, ChevronRight, Music, Calendar, DollarSign, BarChart3, FileText, Mail, Shield, Globe, LogOut, Image } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { useState } from "react"
 import Logo from "../shared/Logo"
@@ -153,6 +153,11 @@ export function Sidebar() {
           label: "Pages",
           href: "/admin/website/pages",
           icon: FileText,
+        },
+        {
+          label: "Banners",
+          href: "/admin/banner",
+          icon: Image,
         },
         {
           label: "SEO",

@@ -28,7 +28,7 @@ export default function CreatorGrid({ creators, onTalkToCreator, onCreatorDouble
         <Link
           href={`/top-creators/${creator.id}`}
           key={creator.id}
-          className="bg-card rounded-lg overflow-hidden border border-border hover:shadow-lg transition-shadow cursor-pointer"
+          className="bg-card rounded-lg overflow-hidden border border-border hover:shadow transition-shadow cursor-pointer"
           onDoubleClick={() => onCreatorDoubleClick(creator)}
         >
           {/* Image Container */}
