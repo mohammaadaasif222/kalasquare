@@ -4,15 +4,15 @@ import { EventCard, type EventItem } from "./event-card"
 import { useState } from "react"
 
 const events: EventItem[] = [
-  {
-    id: "1",
-    title: "Private Dinner Meetup — Million Dollar D2C Founders",
-    city: "Chennai",
-    dateLabel: "Oct 23, 2025",
-    priceType: "Free",
-    verified: true,
-    imageUrl: "/event-poster-blue-tech-meetup.jpg",
-  },
+  // {
+  //   id: "1",
+  //   title: "Private Dinner Meetup — Million Dollar D2C Founders",
+  //   city: "Chennai",
+  //   dateLabel: "Oct 23, 2025",
+  //   priceType: "Free",
+  //   verified: true,
+  //   imageUrl: "/event-poster-blue-tech-meetup.jpg",
+  // },
   {
     id: "2",
     title: "IRUVAR — Echoes Of...",
@@ -111,7 +111,7 @@ export  function FeaturedEventsSection() {
         <div
           id="events-scroll-container"
           onScroll={updateScrollButtons}
-          className="flex gap-3 overflow-x-auto snap-x snap-mandatory scrollbar-hide sm:grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 sm:gap-4 sm:overflow-visible pb-2"
+          className="flex gap-3 overflow-x-auto snap-x snap-mandatory scrollbar-hide sm:grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 sm:gap-4 sm:overflow-visible pb-2"
           style={{
             scrollbarWidth: 'none',
             msOverflowStyle: 'none',

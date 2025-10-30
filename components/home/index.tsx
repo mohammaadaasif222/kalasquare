@@ -454,7 +454,7 @@ export default function HomePageComponent() {
         </section>
 
         {/* CARD BANNERS SECTION */}
-        <BannerSection banners={cardBanners} loading={loading} title="Featured Promotions" showControls={true} />
+        {/* <BannerSection banners={cardBanners} loading={loading} title="Featured Promotions" showControls={true} /> */}
 
         {/* REGISTER PROMO */}
         <section aria-label="Registration 2024" className="py-6 md:py-8">
@@ -504,7 +504,7 @@ export default function HomePageComponent() {
         </section>
 
         {/* BOTTOM BANNERS SECTION */}
-        <BannerSection banners={bottomBanners} loading={loading} title="Special Offers" showControls={true} />
+        {/* <BannerSection banners={bottomBanners} loading={loading} title="Special Offers" showControls={true} /> */}
 
         {/* VENUES */}
         <VenuesSection />
