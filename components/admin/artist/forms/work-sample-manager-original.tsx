@@ -4,9 +4,9 @@ import type React from "react"
 
 import { useEffect, useState } from "react"
 import { useCloudinaryUpload } from "@/hooks/use-cloudnary-upload"
-import { ImageUpload } from "../user/image-upload"
 import { useWorkSample } from "@/hooks/use-work"
 import type { WorkSample } from "@/lib/redux/features/works/worksSlice"
+import { ImageUpload } from "@/components/user/image-upload"
 
 // Types
 export type WorkSampleType = "video" | "image" | "reel" | "others"
