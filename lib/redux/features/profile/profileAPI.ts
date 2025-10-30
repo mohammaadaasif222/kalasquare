@@ -11,8 +11,8 @@ export const create = async (profileData: CreateProfileData): Promise<UserProfil
 
 
 export const update = async (userId: string, updateData: UpdateProfileData): Promise<UserProfile> => {
-  const { data } = await axios.post(`http://localhost:5000/profile/${userId}`, updateData);
-  return data;
+  const { data } = await axios.post(`${API_ENDPOINTS.UPDATE_PROFILE}/profile/${userId}`, updateData);
+  return data
 };
 
 export const logout = async (): Promise<void> => {

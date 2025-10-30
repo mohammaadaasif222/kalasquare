@@ -505,7 +505,6 @@ export default function HomePageComponent() {
 
         {/* BOTTOM BANNERS SECTION */}
         {/* <BannerSection banners={bottomBanners} loading={loading} title="Special Offers" showControls={true} /> */}
-
         {/* VENUES */}
         <VenuesSection />
       </div>
