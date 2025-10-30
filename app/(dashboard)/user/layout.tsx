@@ -8,6 +8,9 @@ import { RootState } from "@/lib/redux/store"
 import { useSelector } from "react-redux"
 import { useRouter } from "next/navigation"
 import { useEffect } from "react"
+import Logo from "@/components/shared/Logo"
+import Link from "next/link"
+import Image from "next/image"
 
 
 
@@ -56,7 +59,11 @@ function LayoutContent({
                 <div className="min-h-screen">
                     {/* Top Header for Mobile */}
                     <div className="md:hidden sticky top-0 z-40 bg-background border-b border-border px-4 py-3 flex items-center justify-between">
-                        <h1 className="text-xl font-bold">KalaSquare</h1>
+                        <div className="flex justify-center items-center">
+                            <Link href="/" className="flex items-center gap-2" aria-label="KalaSquare Home">
+                                <Image src="https://kalasquare.com/public/frontend/images/KalaSquaremainlogo.png" alt="KalaSquare" width={100} height={100} className="rounded-sm" />
+                            </Link>
+                        </div>
                         <div className="flex items-center gap-3">
                             <button className="p-2 hover:bg-muted rounded-lg transition">
                                 <Bell size={20} />

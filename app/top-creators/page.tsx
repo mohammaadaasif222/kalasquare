@@ -272,6 +272,7 @@ import { PublicTalentItem } from "@/lib/redux/features/user/userSlice"
 import Loader from "@/components/shared/Loader"
 import { RootState } from "@/lib/redux/store"
 import { useSelector } from "react-redux"
+import { MobileBottomNav } from "@/components/home/mobile-bottom-nav"
 
 const CREATORS_PER_PAGE = 8
 
@@ -315,7 +316,7 @@ export default function Home() {
   const [selectedCreatorForInquiry, setSelectedCreatorForInquiry] = useState<Creator | null>(null)
   const [detailsModalOpen, setDetailsModalOpen] = useState(false)
   const [selectedCreatorForDetails, setSelectedCreatorForDetails] = useState<Creator | null>(null)
-  
+
   const { talents } = useTalentList(true)
 
   const { publicTalents, talentsPagination, isLoading, error } = useSelector(
@@ -363,8 +364,13 @@ export default function Home() {
     "Travel",
     "Vlogger"
   ]
+  const newCategories = categories.map((item: any, index) => {
+    return { id: index.toString(), name: item }
+  })
   const cities = ["All", "Mumbai", "Delhi", "Bangalore", "Hyderabad", "Chennai"]
-
+  const newCitis = cities.map((item: any, index) => {
+    return { id: index.toString(), name: item }
+  })
   const filteredCreators = useMemo(() => {
     let filtered = [...creators] // Create a copy
 
@@ -482,7 +488,16 @@ export default function Home() {
       </div>
 
       {/* Mobile Bottom Navigation */}
-      {isMobile && <BottomNav activeNav={activeNav} onNavChange={setActiveNav} />}
+
+      <MobileBottomNav categories={newCategories}
+        selectedCategories={selectedCategories}
+        onCategoryChange={handleCategoryChange}
+        cities={newCitis}
+        selectedCity={selectedCity}
+        onCityChange={setSelectedCity}
+        selectedRating={selectedRating}
+        onRatingChange={setSelectedRating} />
+      {/* {isMobile && <BottomNav activeNav={activeNav} onNavChange={setActiveNav} />} */}
 
       <InquiryModal
         isOpen={inquiryModalOpen}

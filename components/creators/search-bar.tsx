@@ -14,7 +14,7 @@ interface SearchBarProps {
 
 export default function SearchBar({ searchQuery, onSearchChange, sortBy, onSortChange, totalResults }: SearchBarProps) {
   return (
-    <div className="mb-8 space-y-4">
+    <div className="mb-8  mt-5 md:mt-0 space-y-4">
       {/* Search Input */}
       <div className="relative">
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
@@ -27,7 +27,7 @@ export default function SearchBar({ searchQuery, onSearchChange, sortBy, onSortC
       </div>
 
       {/* Results and Sort */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-muted p-4 rounded-lg">
+      <div className="flex  sm:flex-row items-start sm:items-center justify-between gap-4 bg-muted p-4 rounded-lg">
         <div className="text-sm">
           <span className="font-semibold">Total {totalResults}</span>
           <span className="text-muted-foreground"> Found</span>

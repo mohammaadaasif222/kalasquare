@@ -824,7 +824,7 @@ export default function ArtistProfileStep({ onComplete }: Props) {
             onClick={handleSubmit}
             disabled={isSubmitting}
             size="lg"
-            className="px-8 py-6 text-lg font-semibold bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 transition-all duration-300 shadow-lg hover:shadow-xl"
+            className="px-8 py-6 text-lg font-semibold bg-[var(--brand)] transition-all duration-300 shadow hover:shadow-xl"
           >
             {isSubmitting ? (
               <span className="flex items-center gap-2">

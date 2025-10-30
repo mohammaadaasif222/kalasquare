@@ -413,6 +413,8 @@ import { ReviewForm } from "@/components/review/review-form"
 import IMDBSection from "@/components/creators/imdb-section"
 import PreviousCampaignSection from "@/components/creators/previous-campaign-section"
 import AwardSection from "@/components/creators/award-section"
+import { AboutSection } from "@/components/creators/about-section"
+import SocialAccountsDisplay from "@/components/creators/social-media"
 
 export default function TalentProfilePage() {
   const params = useParams()
@@ -423,7 +425,6 @@ export default function TalentProfilePage() {
 
   useEffect(() => {
     const handleScroll = () => {
-
       setShowReviewForm(window.scrollY > 1000);
     };
 
@@ -453,6 +454,7 @@ export default function TalentProfilePage() {
     console.log('Review submitted:', reviewData);
   };
 
+ 
   return (
     <div className="min-h-screen bg-white">
       <main className="max-w-6xl mx-auto px-4 py-8">
@@ -465,25 +467,23 @@ export default function TalentProfilePage() {
             <div className="flex flex-wrap gap-2">
               {["About", "Video", "Reels Work", "IMDB", "Portfolio", "Reviews", "Previous Campaigns", "Award"].map(
                 (tag) => (
-                  <Button
+                  <a href={`#${tag}`}
                     key={tag}
-                    className="px-4 py-2 text-sm border bg-white border-red-300 text-[var(--brand)] rounded-full hover:bg-red-50 transition font-medium"
+                    className="px-3 py-2  cursor-pointer text-xs border bg-white border-red-300 text-[var(--brand)] rounded-full hover:bg-red-50 transition font-medium"
                   >
                     {tag}
-                  </Button>
+                  </a>
                 ),
               )}
             </div>
 
             <hr className="my-4" />
-            {/* Services Section */}
-            <section className="mb-12">
-              <h2 className="text-xl font-semibold mb-4 text-gray-900">About</h2>
-              <p className="text-gray-700 leading-relaxed mb-3 text-sm">
-                {profile.portfolio_description || "Professional services available"}
-              </p>
-              <button className="text-[var(--brand)] font-semibold hover:text-[var(--brand)] transition">Read more</button>
-            </section>
+
+
+            <AboutSection
+              description={profile.portfolio_description || "Professional services available"}
+              maxLines={3}
+            />
 
             {/* Rates Section */}
             <section className="mb-12">
@@ -502,12 +502,15 @@ export default function TalentProfilePage() {
                 ))}
               </div>
             </section>
+
             <hr className="py-4" />
-            {/* Videos Section */}
-            <VideoSection talentProfileId={talentId} />
+            <div id="Video">
+              <VideoSection talentProfileId={talentId} />
+            </div>
             <hr className="py-4" />
             {/* Reels Section */}
-            <section className="mb-12">
+
+            <section className="mb-12" id="Reels Work">
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-2xl font-bold text-gray-900">Reels Works</h2>
               </div>
@@ -544,16 +547,23 @@ export default function TalentProfilePage() {
 
             <hr className="py-4" />
             {/* IMDB Section */}
-
-            <IMDBSection />
+            <div id="IMDB">
+              <IMDBSection />
+            </div>
             <hr className="" />
-            <ReviewSection />
+            <div id="Reviews">
+              <ReviewSection />
+            </div>
             <hr className="py-5" />
-            {/* Previous Campaigns Section */}
-            <PreviousCampaignSection />
+            <div id="Previous Campaigns">
+
+              <PreviousCampaignSection />
+            </div>
             <hr className="py-5" />
-            {/* Awards Section */}
-            <AwardSection />
+            <div id="Award">
+
+              <AwardSection />
+            </div>
             <hr className="py-5" />
             {/* Specializations Section */}
             <section className="mb-12">
@@ -575,8 +585,8 @@ export default function TalentProfilePage() {
           <div className="lg:col-span-1">
             <div className="sticky top-24 transition-opacity duration-300">
               {!showReviewForm ? (
-                <Card className="p-6 rounded-xs">
-                  <div className="flex items-start justify-between mb-4">
+                <Card className="p-6 gap-y-3 rounded-xs">
+                  <div className="flex items-start justify-between mb-2">
                     <div>
                       <div className="flex items-center gap-2">
                         <h1 className="text-xl font-bold text-gray-900 capitalize">{profile.display_name}</h1>
@@ -596,11 +606,16 @@ export default function TalentProfilePage() {
                     </div>
                     <Heart className="w-6 h-6 text-gray-400 cursor-pointer hover:text-red-500 transition" />
                   </div>
+                  <div className="flex items-center gap-2 text-sm text-gray-600 mb-4">
+                    <span>
+                      {profile.bio}
+                    </span>
+                  </div>
 
                   {/* Rating */}
-                  <div className="flex items-center gap-2 mb-4">
+                  <div className="flex items-center gap-2 mb-2">
                     <div className="flex">
-                      {[...Array(5)].map((_, i) => (
+                      {[...Array(1)].map((_, i) => (
                         <Star
                           key={i}
                           className={`w-4 h-4 ${i < Math.round(profile.rating?.average || 0) ? "fill-yellow-400 text-yellow-400" : "text-gray-300"}`}
@@ -612,7 +627,7 @@ export default function TalentProfilePage() {
                   </div>
 
                   {/* Location */}
-                  <div className="flex items-center gap-2 text-sm text-gray-600 mb-6">
+                  <div className="flex items-center gap-2 text-sm text-gray-600 mb-4">
                     <MapPin className="w-4 h-4 flex-shrink-0" />
                     <span>
                       {profile.location?.city}, {profile.location?.state}
@@ -620,13 +635,14 @@ export default function TalentProfilePage() {
                   </div>
 
                   {/* Category Badges */}
-                  <div className="flex flex-wrap gap-2 mb-6">
+                  <div className="flex flex-wrap gap-2 mb-4">
                     {profile.categories?.slice(0, 3).map((cat) => (
                       <span key={cat} className="px-3 py-1 text-xs font-semibold bg-red-100 text-[var(--brand)]/80 rounded-full">
                         {cat}
                       </span>
                     ))}
                   </div>
+                  <SocialAccountsDisplay socialAccounts={profile.social_accounts} />
 
                   {/* Action Buttons */}
                   <div className="space-y-3">

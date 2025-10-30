@@ -322,10 +322,7 @@ export const deleteSocialAccount = createAsyncThunk(
   'socials/delete',
   async (accountId: string, { rejectWithValue }) => {
     try {
-      const response = await fetch(`/api/socials/${accountId}`, {
-        method: 'DELETE',
-      });
-      if (!response.ok) throw new Error('Failed to delete social account');
+      const response = await axiosInstance.delete(`/socials/${accountId}`);
       return accountId;
     } catch (error) {
       return rejectWithValue(error instanceof Error ? error.message : 'An error occurred');

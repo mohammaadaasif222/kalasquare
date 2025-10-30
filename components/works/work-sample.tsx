@@ -16,7 +16,7 @@ interface WorkSampleManagerProps {
 }
 
 export default function WorkSampleManager({ talentProfileId }: WorkSampleManagerProps) {
-  const { fetchByTalentProfile, workSamples, create, update } = useWorkSample()
+  const { fetchByTalentProfile, workSamples, create, update, remove } = useWorkSample()
   // Mock data - replace with your actual hooks
 
   const loading = false;
@@ -98,7 +98,7 @@ export default function WorkSampleManager({ talentProfileId }: WorkSampleManager
     if (window.confirm('Are you sure you want to delete this work sample?')) {
       try {
         console.log('Deleting:', id);
-        // await remove(id);
+        await remove(id);
       } catch (err) {
         console.error('Failed to delete work sample:', err);
       }
@@ -302,7 +302,7 @@ export default function WorkSampleManager({ talentProfileId }: WorkSampleManager
                 <button
                   onClick={handleSubmit}
                   disabled={submitting || uploadingFile}
-                  className="flex-1 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-blue-400 disabled:cursor-not-allowed transition-colors font-medium shadow-lg"
+                  className="flex-1 px-6 py-3 bg-[var(--brand)] text-white rounded-lg hover:bg-[var(--brand)]/40 disabled:bg-[var(--brand)]/60 disabled:cursor-not-allowed transition-colors font-medium shadow-lg"
                 >
                   {submitting ? (
                     <span className="flex items-center justify-center">
@@ -458,7 +458,7 @@ export default function WorkSampleManager({ talentProfileId }: WorkSampleManager
                   {/* {sample.status === 'pending' && (
                     <button onClick={() => handleStatusChange(sample.id, 'approved')} className="flex-1 px-3 py-2 bg-green-50 text-green-700 rounded-lg hover:bg-green-100 transition-colors text-sm font-medium">Approve</button>
                   )} */}
-                  <button onClick={() => handleDelete(sample.id)} className="px-3 py-2 bg-red-50 text-red-700 rounded-lg hover:bg-red-100 transition-colors text-sm font-medium">Delete</button>
+                  <button onClick={() => handleDelete(sample.id)} className="px-3 py-2 bg-red-50 text-[var(--brand)] rounded-lg hover:bg-red-100 transition-colors text-sm font-medium">Delete</button>
                 </div>
               </div>
             </div>

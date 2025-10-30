@@ -40,7 +40,7 @@ export default function Sidebar({ activeNav, setActiveNav }: SidebarProps) {
     // { id: "/", label: "Profile", icon: User, action: "edit-profile" },
     { id: "social-accounts", label: "Social Media", icon: Share2 },
     { id: "work-sample", label: "Update Work", icon: Video, },
-    { id: "public-profile", label: "View Public Profile", icon: Eye },
+    // { id: "public-profile", label: "View Public Profile", icon: Eye },
   ]
 
   return (

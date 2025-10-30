@@ -14,7 +14,7 @@ interface Props {
 
 
 const SocialAccountsManager: React.FC<Props> = ({ talentProfileId }: Props) => {
- 
+
   const {
     accounts,
     loading,
@@ -69,7 +69,7 @@ const SocialAccountsManager: React.FC<Props> = ({ talentProfileId }: Props) => {
 
     const dataToSubmit = {
       ...formData,
-      talent_profile_id:talentProfileId,
+      talent_profile_id: talentProfileId,
     }
 
     if (editingId) {
@@ -86,7 +86,7 @@ const SocialAccountsManager: React.FC<Props> = ({ talentProfileId }: Props) => {
   const handleEdit = (account: any) => {
     setEditingId(account.id)
     setFormData({
-      talent_profile_id: talentProfileId?? "",
+      talent_profile_id: talentProfileId ?? "",
       handle: account.handle,
       profile_url: account.profile_url,
       followers_count: account.followers_count,
@@ -161,7 +161,7 @@ const SocialAccountsManager: React.FC<Props> = ({ talentProfileId }: Props) => {
         </div>
         <button
           onClick={() => setIsFormOpen(true)}
-          className="flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-lg hover:shadow-lg hover:from-blue-700 hover:to-blue-800 transition-all duration-200 font-medium text-sm"
+          className="flex items-center gap-2 px-5 py-2.5 bg-[var(--brand)] text-white rounded-lg hover:shadow-lg hover:bg-[var(--brand)]/70 transition-all duration-200 font-medium text-sm"
         >
           <Plus className="w-5 h-5" />
           Add Account
@@ -291,7 +291,7 @@ const SocialAccountsManager: React.FC<Props> = ({ talentProfileId }: Props) => {
 
       {/* Form Modal */}
       {isFormOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 backdrop-blur-sm">
+        <div className="fixed inset-0 bg-black/20 bg-opacity-50 flex items-center justify-center p-4 z-50 backdrop-blur-sm">
           <div className="bg-white rounded-xl max-w-md w-full p-6 shadow-2xl animate-in fade-in zoom-in-95">
             <div className="flex justify-between items-center mb-5">
               <h3 className="text-lg font-bold text-gray-900">
@@ -321,7 +321,7 @@ const SocialAccountsManager: React.FC<Props> = ({ talentProfileId }: Props) => {
               )}
 
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">Handle</label>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">Username</label>
                 <input
                   type="text"
                   value={formData.handle || ""}

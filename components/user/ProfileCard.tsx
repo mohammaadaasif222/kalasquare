@@ -48,8 +48,14 @@ const ProfileCard: React.FC = () => {
 
           {/* Profile Avatar */}
           <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-            <div className="w-14 h-14 bg-gray-300 rounded-full flex items-center justify-center">
-              <Image src={profile?.profile_image_url || "/creators/creator-profile-1.jpg"} alt='' width={100} height={100} className='rounded-full' />
+            <div className="w-14 h-14 bg-gray-300 rounded-full flex items-center justify-center overflow-hidden">
+              <Image
+                src={profile?.profile_image_url || "/creators/creator-profile-1.jpg"}
+                alt=''
+                width={56}
+                height={56}
+                className='rounded-full object-cover w-full h-full'
+              />
             </div>
           </div>
         </div>
@@ -100,7 +106,7 @@ const ProfileCard: React.FC = () => {
 
           <li className="flex items-start gap-2">
             <span className="text-gray-700 text-xs leading-tight">
-              <PhoneVerification initialPhone={user.phone||9348989098} onVerified={() => {
+              <PhoneVerification initialPhone={user.phone || 9348989098} onVerified={() => {
                 console.log("verify")
               }} />
             </span>

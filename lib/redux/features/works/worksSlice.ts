@@ -342,7 +342,7 @@ export const fetchWorkSampleById = createAsyncThunk(
   async (id: string, { rejectWithValue }) => {
     try {
       const response = await axiosInstance.get(`/work-samples/${id}`);
-    
+
       return response.data;
     } catch (error: any) {
       return rejectWithValue(error.message);
@@ -409,16 +409,9 @@ export const updateWorkSample = createAsyncThunk(
   'workSample/update',
   async ({ id, data }: { id: string; data: UpdateWorkSampleDto }, { rejectWithValue }) => {
     try {
-      const response = await fetch(`/api/work-samples/${id}`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
-      });
-      if (!response.ok) {
-        const error = await response.json();
-        return rejectWithValue(error.message || 'Failed to update work sample');
-      }
-      return await response.json();
+      const response = await axiosInstance.patch(`/work-samples/${id}`, data);
+
+      return response.data;
     } catch (error: any) {
       return rejectWithValue(error.message);
     }
@@ -429,16 +422,9 @@ export const updateWorkSampleStatus = createAsyncThunk(
   'workSample/updateStatus',
   async ({ id, status }: { id: string; status: WorkStatus }, { rejectWithValue }) => {
     try {
-      const response = await fetch(`/api/work-samples/${id}/status`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ status }),
-      });
-      if (!response.ok) {
-        const error = await response.json();
-        return rejectWithValue(error.message || 'Failed to update status');
-      }
-      return await response.json();
+      const response = await axiosInstance.patch(`/work-samples/${id}/status`, { status });
+
+      return response.data;
     } catch (error: any) {
       return rejectWithValue(error.message);
     }
@@ -449,13 +435,7 @@ export const deleteWorkSample = createAsyncThunk(
   'workSample/delete',
   async (id: string, { rejectWithValue }) => {
     try {
-      const response = await fetch(`/api/work-samples/${id}`, {
-        method: 'DELETE',
-      });
-      if (!response.ok) {
-        const error = await response.json();
-        return rejectWithValue(error.message || 'Failed to delete work sample');
-      }
+      const response = await axiosInstance.delete(`/work-samples/${id}`)
       return { id };
     } catch (error: any) {
       return rejectWithValue(error.message);
