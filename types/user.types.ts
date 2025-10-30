@@ -1,14 +1,16 @@
 // types/user.types.ts
-export type UserType = 'artist' | 'influencer' | 'brand' | 'agency' | 'venue' | 'admin' |'user';
+export type UserType = 'artist' | 'influencer' | 'brand' | 'agency' | 'venue' | 'admin' | 'user';
 
 
 export interface AuthState {
   user: User | null;
+  admin: User | null;
   token: string | null;
+  adminToken: string | null;
   isAuthenticated: boolean;
   isLoading: boolean;
   error: string | null;
-  message:string |null
+  message: string | null
 }
 
 export interface LoginCredentials {
@@ -16,7 +18,7 @@ export interface LoginCredentials {
   password: string;
 }
 export interface GoogleLoginCredentials {
-  token:string
+  token: string
 }
 
 export interface RegisterData {
@@ -28,6 +30,8 @@ export interface RegisterData {
 
 export interface AuthResponse {
   user: User;
+  admin?: User;
+  adminToken?: string
   token: string;
   message: string;
 }
@@ -139,4 +143,4 @@ export interface GoogleCredentialResponse {
   select_by?: string;
 }
 
-export {};
+export { };

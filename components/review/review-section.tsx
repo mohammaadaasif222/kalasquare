@@ -78,20 +78,17 @@ export function ReviewSection() {
   }, [])
 
   return (
-    <div className="container mx-auto px-4 py-12">
+    <div className="container mx-auto py-12">
       <div className="mb-12">
-        <h1 className="text-4xl font-bold text-foreground mb-2">Customer Reviews</h1>
-        <p className="text-muted-foreground text-lg">See what our customers think about us</p>
+        <h2 className="text-2xl font-bold text-foreground">Reviews</h2>
       </div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1  gap-8">
         {/* Reviews List */}
         <div className="lg:col-span-2">
           <ReviewList reviews={reviews} />
         </div>
 
-        {/* Sticky Form */}
-        <div className="lg:col-span-1">
+        <div className="lg:col-span-1 md:hidden">
           <div className="sticky top-8">
             <ReviewForm onSubmit={handleAddReview} />
           </div>

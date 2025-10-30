@@ -21,12 +21,15 @@ export function ReviewList({ reviews }: ReviewListProps) {
     observerRef.current = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) {
+          if (entry.isIntersecting && visibleCount < reviews.length) {
             setVisibleCount((prev) => Math.min(prev + 3, reviews.length))
           }
         })
       },
-      { threshold: 0.1 },
+      { 
+        threshold: 0.1,
+        root: container
+      },
     )
 
     // Observe the last item
@@ -46,7 +49,10 @@ export function ReviewList({ reviews }: ReviewListProps) {
   const visibleReviews = reviews.slice(0, visibleCount)
 
   return (
-    <div ref={containerRef} className="space-y-4">
+    <div 
+      ref={containerRef} 
+      className="space-y-4 max-h-[600px] no-scrollbar overflow-y-auto border border-gray-200 rounded-lg p-4 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100"
+    >
       {visibleReviews.map((review, index) => (
         <div key={review.id} data-review-item>
           <ReviewCard review={review} />
@@ -54,16 +60,37 @@ export function ReviewList({ reviews }: ReviewListProps) {
       ))}
 
       {visibleCount < reviews.length && (
-        <div className="flex justify-center py-8">
-          <div className="animate-spin rounded-full h-8 w-8 border-2 border-primary border-t-transparent"></div>
+        <div className="flex justify-center py-4">
+          <div className="animate-spin rounded-full h-6 w-6 border-2 border-primary border-t-transparent"></div>
         </div>
       )}
 
-      {visibleCount >= reviews.length && reviews.length > 0 && (
-        <div className="text-center py-8">
-          <p className="text-muted-foreground">No more reviews to load</p>
+      {visibleCount >= reviews.length && reviews.length > 3 && (
+        <div className="text-center py-4">
+          <p className="text-sm text-muted-foreground">No more reviews to load</p>
         </div>
       )}
+
+      <style jsx>{`
+        /* Custom scrollbar styling */
+        .scrollbar-thin::-webkit-scrollbar {
+          width: 8px;
+        }
+        
+        .scrollbar-thin::-webkit-scrollbar-track {
+          background: #f1f1f1;
+          border-radius: 4px;
+        }
+        
+        .scrollbar-thin::-webkit-scrollbar-thumb {
+          background: #d1d5db;
+          border-radius: 4px;
+        }
+        
+        .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+          background: #9ca3af;
+        }
+      `}</style>
     </div>
   )
 }

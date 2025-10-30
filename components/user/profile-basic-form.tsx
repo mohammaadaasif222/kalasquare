@@ -394,7 +394,7 @@ export function ProfileBasicForm({ profile, onSubmit, isLoading, onCancel }: Pro
     website_url: profile.website_url || "",
     location_city: profile.location_city || "",
     location_state: profile.location_state || "",
-    pin_code: profile.pin_code || "",
+    pin_code: profile.pin_code || " ",
     location_country: "India",
     languages: profile.languages || "",
     highest_education: profile.highest_education || "",

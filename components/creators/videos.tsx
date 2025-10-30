@@ -140,7 +140,7 @@ export default function VideoSection({ talentProfileId }: Props) {
     }
   }
 
-  const filtered = workSamples?.filter((item) => item.type === "video")
+  const filtered = workSamples?.filter((item) => item.type === "video").slice(0,3)
   if (!filtered || loading) {
     return <VideoSectionSkeleton />
   }

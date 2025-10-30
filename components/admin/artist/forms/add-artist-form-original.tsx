@@ -13,7 +13,8 @@ import { useProfile } from "@/hooks/use-profile"
 import { type AvailabilityStatus, type ExperienceLevel, type TalentType, useTalent } from "@/hooks/use-talent"
 import { ImageUpload } from "@/components/user/image-upload"
 import { Loader2, CheckCircle2, X } from "lucide-react"
-import SocialAccountsManager from "./forms/social-media"
+import SocialAccountsManager from "./social-accounts-manager-original"
+
 
 interface FormData {
   email: string

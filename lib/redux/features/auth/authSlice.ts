@@ -17,6 +17,8 @@ const loadAuthState = (): AuthState => {
   if (typeof window === 'undefined') {
     return {
       user: null,
+      admin: null,
+      adminToken: null,
       token: null,
       isAuthenticated: false,
       isLoading: false,
@@ -31,7 +33,24 @@ const loadAuthState = (): AuthState => {
 
     if (serializedUser && token) {
       return {
+        admin: null,
+        adminToken: null,
         user: JSON.parse(serializedUser),
+        token,
+        isAuthenticated: true,
+        isLoading: false,
+        error: null,
+        message: null
+      };
+    }
+    const serializedAdmin = localStorage.getItem('admin');
+    const adminToken = Cookies.get('adminToken');
+
+    if (serializedUser && token) {
+      return {
+        admin: JSON.parse(serializedAdmin ?? ""),
+        adminToken: adminToken ?? "",
+        user: null,
         token,
         isAuthenticated: true,
         isLoading: false,
@@ -45,6 +64,8 @@ const loadAuthState = (): AuthState => {
 
   return {
     user: null,
+    admin: null,
+    adminToken: null,
     token: null,
     isAuthenticated: false,
     isLoading: false,
@@ -75,8 +96,13 @@ export const loginUser = createAsyncThunk(
       const response = await authAPI.login(credentials);
 
       // Persist to localStorage and cookies
-      localStorage.setItem('user', JSON.stringify(response.user));
-      Cookies.set('token', response.token, { expires: 7 });
+      if (response.admin) {
+        localStorage.setItem('admin', JSON.stringify(response.admin));
+        Cookies.set('adminToken', response.adminToken ?? "", { expires: 7 });
+      } else {
+        localStorage.setItem('user', JSON.stringify(response.user));
+        Cookies.set('token', response.token, { expires: 7 });
+      }
 
       return response;
     } catch (error: any) {
@@ -123,7 +149,7 @@ export const logoutUser = createAsyncThunk(
   'auth/logout',
   async (_, { rejectWithValue }) => {
     try {
- 
+
       localStorage.removeItem('user');
       Cookies.remove('token');
       localStorage.clear()
@@ -246,7 +272,7 @@ const authSlice = createSlice({
       })
       .addCase(updatePassword.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.message ="Password updated successfull!"
+        state.message = "Password updated successfull!"
       })
       .addCase(updatePassword.rejected, (state, action) => {
         state.isLoading = false;

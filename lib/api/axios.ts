@@ -43,8 +43,9 @@ axiosInstance.interceptors.response.use(
         return axiosInstance(originalRequest);
       } catch (refreshError) {
         // If refresh fails, clear token and redirect to login
-        // Cookies.remove('token');
-        // window.location.href = '/login';
+        Cookies.remove('token');
+        window.localStorage.removeItem("user")
+        window.location.href = '/';
         return Promise.reject(refreshError);
       }
     }

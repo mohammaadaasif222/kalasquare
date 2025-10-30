@@ -406,7 +406,7 @@ export function CreateTalentForm({ userId }: CreateTalentFormProps) {
         {/* Portfolio & Achievements */}
         <div className="space-y-2">
           <Label htmlFor="portfolio_description" className="font-semibold">
-            Portfolio Description
+            About
           </Label>
           <Textarea
             id="portfolio_description"

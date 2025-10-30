@@ -48,7 +48,7 @@ export default function TalentListPage() {
   }, [])
 
   const handleTalentClick = (talentId: string) => {
-    router.push(`/admin/artist/${talentId}`)
+    router.push(`/admin/artists/${talentId}`)
   }
 
   const totalPages = adminPagination?.totalPages || 1

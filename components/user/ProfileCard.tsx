@@ -5,10 +5,11 @@ import { Mail, Phone } from 'lucide-react';
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { PhoneVerification } from './phone-verification';
 
 const ProfileCard: React.FC = () => {
   const { profile } = useProfile()
-  const { user } = useSelector((state:any) => state.auth)
+  const { user } = useSelector((state: any) => state.auth)
   const { talent } = useTalent()
   const [mounted, setMounted] = useState(false);
   useEffect(() => {
@@ -16,13 +17,13 @@ const ProfileCard: React.FC = () => {
   }, []);
 
   if (!mounted) return null;
- 
+
   return (
     <div className="mb-3">
-      {/* Profile Image with Progress */}
+
       <div className="flex flex-col items-center">
         <div className="relative">
-          {/* Progress Circle */}
+
           <svg className="w-20 h-20 transform -rotate-260">
             <circle
               cx="40"
@@ -48,7 +49,7 @@ const ProfileCard: React.FC = () => {
           {/* Profile Avatar */}
           <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
             <div className="w-14 h-14 bg-gray-300 rounded-full flex items-center justify-center">
-              <Image src={profile?.profile_image_url ||"/creators/creator-profile-1.jpg"} alt='' width={100} height={100} className='rounded-full' />
+              <Image src={profile?.profile_image_url || "/creators/creator-profile-1.jpg"} alt='' width={100} height={100} className='rounded-full' />
             </div>
           </div>
         </div>
@@ -98,9 +99,10 @@ const ProfileCard: React.FC = () => {
           </li>
 
           <li className="flex items-start gap-2">
-            <Phone className='w-4 h-4' />
             <span className="text-gray-700 text-xs leading-tight">
-              Job application updates
+              <PhoneVerification initialPhone={user.phone||9348989098} onVerified={() => {
+                console.log("verify")
+              }} />
             </span>
           </li>
 

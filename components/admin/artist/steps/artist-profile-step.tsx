@@ -3,7 +3,6 @@
 import type React from "react"
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
-import { FormSection } from "@/components/admin/forms/form-section"
 import { FormInput } from "@/components/admin/forms/form-input"
 import { FormTextarea } from "@/components/admin/forms/form-textarea"
 import { FormSelect } from "@/components/admin/forms/form-select"
@@ -12,8 +11,7 @@ import { useUser } from "@/hooks/use-user"
 import { useProfile } from "@/hooks/use-profile"
 import { type AvailabilityStatus, type ExperienceLevel, type TalentType, useTalent } from "@/hooks/use-talent"
 import { ImageUpload } from "@/components/user/image-upload"
-import { Loader2, CheckCircle2, X } from "lucide-react"
-import SocialAccountsManager from "./forms/social-media"
+import { Loader2, X } from "lucide-react"
 
 interface FormData {
   email: string
@@ -50,8 +48,6 @@ interface FormData {
   cintaId: string
   whatsapp: string
   manager_contact: string
-  reels: string[]
-  videos: string[]
 }
 
 const INITIAL_FORM_DATA: FormData = {
@@ -89,8 +85,6 @@ const INITIAL_FORM_DATA: FormData = {
   cintaId: "",
   whatsapp: "",
   manager_contact: "",
-  reels: Array(6).fill(""),
-  videos: Array(6).fill(""),
 }
 
 const ACTOR_CATEGORIES = ["Drama", "Comedy", "Action", "Thriller", "Romance", "Horror", "Sci-Fi", "Animation"]
@@ -107,7 +101,6 @@ const ARTIST_CATEGORIES = [
   "Country",
   "Other",
 ]
-
 const GENDERS = ["Male", "Female", "Non-binary", "Prefer not to say"]
 const EXPERIENCE_LEVELS = ["beginner", "intermediate", "professional", "expert"]
 const AVAILABILITY_STATUSES = ["available", "busy", "booked", "inactive"]
@@ -123,25 +116,21 @@ const COLLABORATION_PREFS = [
 interface ValidationErrors {
   [key: string]: string
 }
-interface PartStatus {
-  [key: string]: "idle" | "loading" | "success" | "error"
+
+interface Props {
+  onComplete: (data: any) => void
 }
 
-export default function AddArtistForm() {
+export default function ArtistProfileStep({ onComplete }: Props) {
   const [formData, setFormData] = useState<FormData>(INITIAL_FORM_DATA)
   const [errors, setErrors] = useState<ValidationErrors>({})
-  const [profile_image_urlPreview, setprofile_image_urlPreview] = useState("")
+  const [profileImagePreview, setProfileImagePreview] = useState("")
   const [uploadingProfile, setUploadingProfile] = useState(false)
-  const [partStatus, setPartStatus] = useState<PartStatus>({
-    user: "idle",
-    profile: "idle",
-    talent: "idle",
-    media: "idle",
-  })
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [submitSuccess, setSubmitSuccess] = useState(false)
   const [specializationInput, setSpecializationInput] = useState("")
   const [languageInput, setLanguageInput] = useState("")
+  const [awardInput, setAwardInput] = useState("")
+  const [certificationInput, setCertificationInput] = useState("")
   const [submitProgress, setSubmitProgress] = useState(0)
 
   const { create, isLoading } = useUser()
@@ -177,7 +166,6 @@ export default function AddArtistForm() {
         specializations: [...prev.specializations, trimmed],
       }))
       setSpecializationInput("")
-      if (errors.specializations) setErrors((prev) => ({ ...prev, specializations: "" }))
     }
   }
 
@@ -196,7 +184,6 @@ export default function AddArtistForm() {
         languages: [...prev.languages, trimmed],
       }))
       setLanguageInput("")
-      if (errors.languages) setErrors((prev) => ({ ...prev, languages: "" }))
     }
   }
 
@@ -207,15 +194,43 @@ export default function AddArtistForm() {
     }))
   }
 
-  const handleMediaChange = (type: "reels" | "videos", index: number, value: string) => {
-    setFormData((prev) => {
-      const newMedia = [...prev[type]]
-      newMedia[index] = value
-      return { ...prev, [type]: newMedia }
-    })
+  const handleAddAward = () => {
+    const trimmed = awardInput.trim()
+    if (trimmed && !formData.awards.includes(trimmed)) {
+      setFormData((prev) => ({
+        ...prev,
+        awards: [...prev.awards, trimmed],
+      }))
+      setAwardInput("")
+    }
   }
 
-  const validateUserPart = (): boolean => {
+  const handleRemoveAward = (award: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      awards: prev.awards.filter((a) => a !== award),
+    }))
+  }
+
+  const handleAddCertification = () => {
+    const trimmed = certificationInput.trim()
+    if (trimmed && !formData.certifications.includes(trimmed)) {
+      setFormData((prev) => ({
+        ...prev,
+        certifications: [...prev.certifications, trimmed],
+      }))
+      setCertificationInput("")
+    }
+  }
+
+  const handleRemoveCertification = (cert: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      certifications: prev.certifications.filter((c) => c !== cert),
+    }))
+  }
+
+  const validateForm = (): boolean => {
     const newErrors: ValidationErrors = {}
     if (!formData.email.trim()) newErrors.email = "Email is required"
     else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) newErrors.email = "Invalid email format"
@@ -224,62 +239,34 @@ export default function AddArtistForm() {
       newErrors.phone = "Invalid phone number"
     if (!formData.password.trim()) newErrors.password = "Password is required"
     else if (formData.password.length < 8) newErrors.password = "Password must be at least 8 characters"
-    setErrors((prev) => ({ ...prev, ...newErrors }))
-    return Object.keys(newErrors).length === 0
-  }
-
-  const validateProfilePart = (): boolean => {
-    return true
-  }
-
-  const validateTalentPart = (): boolean => {
-    const newErrors: ValidationErrors = {}
     if (formData.categories.length === 0) newErrors.categories = "Select at least one category"
     if (formData.specializations.length === 0) newErrors.specializations = "Add at least one specialization"
-    setErrors((prev) => ({ ...prev, ...newErrors }))
+    setErrors(newErrors)
     return Object.keys(newErrors).length === 0
   }
 
-  const validateMediaPart = (): boolean => {
-    const newErrors: ValidationErrors = {}
-    formData.reels.forEach((reel, index) => {
-      if (reel.trim() && !/^https?:\/\/.+/.test(reel)) newErrors[`reels[${index}]`] = "Invalid URL"
-    })
-    formData.videos.forEach((video, index) => {
-      if (video.trim() && !/^https?:\/\/.+/.test(video)) newErrors[`videos[${index}]`] = "Invalid URL"
-    })
-    setErrors((prev) => ({ ...prev, ...newErrors }))
-    return Object.keys(newErrors).length === 0
-  }
+  const handleSubmit = async () => {
+    if (!validateForm()) return
 
-  const handleSubmitAll = async () => {
     setIsSubmitting(true)
-    setSubmitSuccess(false)
     setSubmitProgress(0)
 
     try {
-      // Step 1: User
-      if (!validateUserPart()) {
-        setIsSubmitting(false)
-        return
-      }
-      setPartStatus((prev) => ({ ...prev, user: "loading" }))
+      // Step 1: Create User
       setSubmitProgress(25)
-      const pay = { email: formData.email, password: formData.password, phone: formData.phone, user_type: "user" }
-      const newUser = await create(pay)
-      localStorage.setItem("newUser", JSON.stringify(newUser.payload))
-      setPartStatus((prev) => ({ ...prev, user: "success" }))
-
-      // Step 2: Profile
-      if (!validateProfilePart()) {
-        setIsSubmitting(false)
-        return
+      const userPayload = {
+        email: formData.email,
+        password: formData.password,
+        phone: formData.phone,
+        user_type: "user",
       }
-      setPartStatus((prev) => ({ ...prev, profile: "loading" }))
+      const newUser = await create(userPayload)
+      const userId = newUser.payload.id
+
+      // Step 2: Create Profile
       setSubmitProgress(50)
-      const storedUser = JSON.parse(localStorage.getItem("newUser") ?? "{}")
-      const profilePay = {
-        user_id: storedUser.id,
+      const profilePayload = {
+        user_id: userId,
         first_name: formData.first_name,
         last_name: formData.last_name,
         display_name: formData.display_name,
@@ -291,32 +278,26 @@ export default function AddArtistForm() {
         location_city: formData.location_city,
         location_state: formData.location_state,
         location_country: formData.location_country,
-        website_url: "",
+        website_url: formData.website_url,
         languages: formData.languages,
         highest_education: formData.highest_education,
         cintaId: formData.cintaId,
         whatsapp: formData.whatsapp,
       }
-      await createProfile(profilePay)
-      setPartStatus((prev) => ({ ...prev, profile: "success" }))
+      await createProfile(profilePayload)
 
-      // Step 3: Talent
-      if (!validateTalentPart()) {
-        setIsSubmitting(false)
-        return
-      }
-      setPartStatus((prev) => ({ ...prev, talent: "loading" }))
+      // Step 3: Create Talent Profile
       setSubmitProgress(75)
-      const talentPay = {
-        user_id: storedUser.id,
+      const talentPayload = {
+        user_id: userId,
         talent_type: formData.talent_type,
         categories: formData.categories,
         specializations: formData.specializations,
         experience_level: formData.experience_level,
         years_of_experience: Number(formData.years_of_experience),
         rate_per_video: formData.rate_per_video,
-        rate_per_live: formData.rate_per_video,
-        rate_per_post: formData.rate_per_video,
+        rate_per_live: formData.rate_per_live,
+        rate_per_post: formData.rate_per_post,
         availability_status: formData.availability_status,
         portfolio_description: formData.portfolio_description,
         achievements: formData.achievements,
@@ -325,37 +306,27 @@ export default function AddArtistForm() {
         collaboration_preferences: formData.collaboration_preferences,
         verify_badge: false,
       }
-      const talent = await createTalent(talentPay)
-      localStorage.setItem("newTalent", JSON.stringify(talent.payload))
-      setPartStatus((prev) => ({ ...prev, talent: "success" }))
-      localStorage.removeItem("newUser")
+      const talent = await createTalent(talentPayload)
+      const talentProfileId = talent.payload.id
 
-      // Step 4: Media
-      if (!validateMediaPart()) {
-        setIsSubmitting(false)
-        return
-      }
-      setPartStatus((prev) => ({ ...prev, media: "loading" }))
-      setSubmitProgress(90)
-      // const mediaData = {
-      //   reels: formData.reels.filter((r) => r.trim()),
-      //   videos: formData.videos.filter((v) => v.trim()),
-      // }
-      // await new Promise((resolve) => setTimeout(resolve, 1000))
-      setPartStatus((prev) => ({ ...prev, media: "success" }))
       setSubmitProgress(100)
 
-      setSubmitSuccess(true)
+      // Call onComplete with the data
+      onComplete({
+        talentProfileId,
+        userId,
+        profileData: formData,
+      })
     } catch (error) {
       console.error("Error during submission:", error)
-      setPartStatus((prev) => ({ ...prev, [Object.keys(prev).find((k) => prev[k] === "loading") || "user"]: "error" }))
+      setErrors({ submit: "Failed to create profile. Please try again." })
     } finally {
       setIsSubmitting(false)
     }
   }
 
   const handleImageUpload = (url: string) => {
-    setprofile_image_urlPreview(url)
+    setProfileImagePreview(url)
     setFormData((prev) => ({
       ...prev,
       profile_image_url: url,
@@ -363,39 +334,28 @@ export default function AddArtistForm() {
   }
 
   const handleImageRemove = () => {
-    setprofile_image_urlPreview("")
+    setProfileImagePreview("")
     setFormData((prev) => ({
       ...prev,
       profile_image_url: "",
     }))
   }
 
-  if (submitSuccess) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
-        <div className="bg-white rounded-lg shadow-xl p-8 max-w-md w-full text-center space-y-4 animate-in fade-in zoom-in duration-500">
-          <CheckCircle2 className="w-16 h-16 text-green-500 mx-auto" />
-          <h1 className="text-2xl font-bold text-slate-900">Registration Complete!</h1>
-          <p className="text-slate-600">Your artist profile has been successfully created.</p>
-          <Button onClick={() => window.location.reload()} className="w-full">
-            Create Another Profile
-          </Button>
-        </div>
-      </div>
-    )
-  }
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 py-12 px-4">
-      <div className="max-w-6xl mx-auto space-y-8">
-        {/* Header */}
-        <div className="text-center space-y-2 mb-8">
-          <h1 className="text-4xl font-bold text-slate-900">Create Artist Profile</h1>
-          <p className="text-slate-600">Complete all sections to register your artist account</p>
+    <div className="p-8 md:p-12">
+      <div className="max-w-4xl mx-auto space-y-8">
+        <div>
+          <h2 className="text-3xl font-bold text-slate-900 mb-2">Create Your Artist Profile</h2>
+          <p className="text-slate-600">Tell us about yourself and your artistic journey</p>
         </div>
 
-        {/* Form Sections */}
-        <FormSection title="Account Details" description="Create your login credentials" status={partStatus.user}>
+        {errors.submit && (
+          <div className="p-4 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">{errors.submit}</div>
+        )}
+
+        {/* Account Details */}
+        <div className="space-y-4">
+          <h3 className="text-lg font-semibold text-slate-900">Account Details</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <FormInput
               label="Email Address"
@@ -430,9 +390,11 @@ export default function AddArtistForm() {
             error={errors.password}
             required
           />
-        </FormSection>
+        </div>
 
-        <FormSection title="Profile Information" description="Tell us about yourself" status={partStatus.profile}>
+        {/* Personal Information */}
+        <div className="space-y-4">
+          <h3 className="text-lg font-semibold text-slate-900">Personal Information</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <FormInput
               label="First Name"
@@ -508,7 +470,7 @@ export default function AddArtistForm() {
                   }
                 }}
                 placeholder="Type a language and press Enter"
-                className="flex-1 px-3 py-2 border border-slate-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="flex-1 px-3 py-2 border border-slate-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
               />
               <Button onClick={handleAddLanguage} variant="outline" size="sm">
                 Add
@@ -527,7 +489,6 @@ export default function AddArtistForm() {
                 </div>
               ))}
             </div>
-            {errors.languages && <p className="text-red-500 text-sm mt-1">{errors.languages}</p>}
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <FormInput
@@ -557,6 +518,15 @@ export default function AddArtistForm() {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <FormInput
+              label="Website URL"
+              id="website_url"
+              name="website_url"
+              type="url"
+              placeholder="https://yourwebsite.com"
+              value={formData.website_url}
+              onChange={handleInputChange}
+            />
+            <FormInput
               label="CINTA ID"
               id="cintaId"
               name="cintaId"
@@ -564,6 +534,8 @@ export default function AddArtistForm() {
               value={formData.cintaId}
               onChange={handleInputChange}
             />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <FormInput
               label="WhatsApp"
               id="whatsapp"
@@ -572,21 +544,27 @@ export default function AddArtistForm() {
               value={formData.whatsapp}
               onChange={handleInputChange}
             />
+            <FormInput
+              label="Manager Contact"
+              id="manager_contact"
+              name="manager_contact"
+              placeholder="Manager contact"
+              value={formData.manager_contact}
+              onChange={handleInputChange}
+            />
           </div>
           <ImageUpload
             label="Profile Picture"
-            preview={profile_image_urlPreview}
+            preview={profileImagePreview}
             onUpload={handleImageUpload}
             onRemove={handleImageRemove}
             loading={uploadingProfile}
           />
-        </FormSection>
+        </div>
 
-        <FormSection
-          title="Talent Profile"
-          description="Showcase your skills and experience"
-          status={partStatus.talent}
-        >
+        {/* Talent Information */}
+        <div className="space-y-4">
+          <h3 className="text-lg font-semibold text-slate-900">Talent Information</h3>
           <FormSelect
             label="Talent Type"
             id="talent_type"
@@ -624,7 +602,7 @@ export default function AddArtistForm() {
                   }
                 }}
                 placeholder="Type a specialization and press Enter"
-                className="flex-1 px-3 py-2 border border-slate-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="flex-1 px-3 py-2 border border-slate-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
               />
               <Button onClick={handleAddSpecialization} variant="outline" size="sm">
                 Add
@@ -634,12 +612,12 @@ export default function AddArtistForm() {
               {formData.specializations.map((spec) => (
                 <div
                   key={spec}
-                  className="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-sm flex items-center gap-2"
+                  className="bg-indigo-100 text-indigo-800 px-3 py-1 rounded-full text-sm flex items-center gap-2"
                 >
                   {spec}
                   <button
                     onClick={() => handleRemoveSpecialization(spec)}
-                    className="hover:text-purple-600 transition-colors"
+                    className="hover:text-indigo-600 transition-colors"
                   >
                     <X size={14} />
                   </button>
@@ -725,7 +703,7 @@ export default function AddArtistForm() {
             }))}
           />
           <FormTextarea
-            label="About"
+            label="About Your Work"
             id="portfolio_description"
             name="portfolio_description"
             placeholder="Describe your work and style..."
@@ -742,6 +720,79 @@ export default function AddArtistForm() {
             onChange={handleInputChange}
             rows={3}
           />
+          <div>
+            <label className="text-sm font-medium text-slate-700 block mb-2">Awards</label>
+            <div className="flex gap-2 mb-3">
+              <input
+                type="text"
+                value={awardInput}
+                onChange={(e) => setAwardInput(e.target.value)}
+                onKeyPress={(e) => {
+                  if (e.key === "Enter") {
+                    e.preventDefault()
+                    handleAddAward()
+                  }
+                }}
+                placeholder="Type an award and press Enter"
+                className="flex-1 px-3 py-2 border border-slate-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              />
+              <Button onClick={handleAddAward} variant="outline" size="sm">
+                Add
+              </Button>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {formData.awards.map((award) => (
+                <div
+                  key={award}
+                  className="bg-amber-100 text-amber-800 px-3 py-1 rounded-full text-sm flex items-center gap-2"
+                >
+                  {award}
+                  <button onClick={() => handleRemoveAward(award)} className="hover:text-amber-600 transition-colors">
+                    <X size={14} />
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <label className="text-sm font-medium text-slate-700 block mb-2">Certifications</label>
+            <div className="flex gap-2 mb-3">
+              <input
+                type="text"
+                value={certificationInput}
+                onChange={(e) => setCertificationInput(e.target.value)}
+                onKeyPress={(e) => {
+                  if (e.key === "Enter") {
+                    e.preventDefault()
+                    handleAddCertification()
+                  }
+                }}
+                placeholder="Type a certification and press Enter"
+                className="flex-1 px-3 py-2 border border-slate-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              />
+              <Button onClick={handleAddCertification} variant="outline" size="sm">
+                Add
+              </Button>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {formData.certifications.map((cert) => (
+                <div
+                  key={cert}
+                  className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm flex items-center gap-2"
+                >
+                  {cert}
+                  <button
+                    onClick={() => handleRemoveCertification(cert)}
+                    className="hover:text-green-600 transition-colors"
+                  >
+                    <X size={14} />
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+
           <FormCheckboxGroup
             label="Collaboration Preferences"
             options={COLLABORATION_PREFS}
@@ -749,73 +800,42 @@ export default function AddArtistForm() {
             onChange={(pref) => handleArrayToggle("collaboration_preferences", pref)}
             columns={2}
           />
-          <FormInput
-            label="Manager Contact"
-            id="manager_contact"
-            name="manager_contact"
-            placeholder="Manager contact"
-            value={formData.manager_contact}
-            onChange={handleInputChange}
-          />
-        </FormSection>
+        </div>
 
+        {/* Submit Progress */}
         {isSubmitting && (
-          <div className="bg-white rounded-lg shadow p-6 space-y-3">
+          <div className="bg-slate-50 rounded-lg p-6 space-y-3">
             <div className="flex items-center justify-between">
-              <h3 className="font-semibold text-slate-900">Submitting your profile...</h3>
+              <h3 className="font-semibold text-slate-900">Creating your profile...</h3>
               <span className="text-sm text-slate-600">{submitProgress}%</span>
             </div>
             <div className="w-full bg-slate-200 rounded-full h-2 overflow-hidden">
               <div
-                className="bg-gradient-to-r from-blue-500 to-indigo-600 h-full transition-all duration-300 ease-out"
+                className="bg-gradient-to-r from-indigo-500 to-blue-600 h-full transition-all duration-300 ease-out"
                 style={{ width: `${submitProgress}%` }}
               />
-            </div>
-            <div className="grid grid-cols-4 gap-2 text-xs">
-              <div
-                className={`text-center py-2 rounded ${partStatus.user === "success" ? "bg-green-100 text-green-700" : partStatus.user === "loading" ? "bg-blue-100 text-blue-700" : "bg-slate-100 text-slate-600"}`}
-              >
-                Account
-              </div>
-              <div
-                className={`text-center py-2 rounded ${partStatus.profile === "success" ? "bg-green-100 text-green-700" : partStatus.profile === "loading" ? "bg-blue-100 text-blue-700" : "bg-slate-100 text-slate-600"}`}
-              >
-                Profile
-              </div>
-              <div
-                className={`text-center py-2 rounded ${partStatus.talent === "success" ? "bg-green-100 text-green-700" : partStatus.talent === "loading" ? "bg-blue-100 text-blue-700" : "bg-slate-100 text-slate-600"}`}
-              >
-                Talent
-              </div>
-              <div
-                className={`text-center py-2 rounded ${partStatus.media === "success" ? "bg-green-100 text-green-700" : partStatus.media === "loading" ? "bg-blue-100 text-blue-700" : "bg-slate-100 text-slate-600"}`}
-              >
-                Media
-              </div>
             </div>
           </div>
         )}
 
-        {/* Single Submit Button */}
-        <div className="flex justify-center pt-4">
+        {/* Submit Button */}
+        <div className="flex justify-end pt-6 border-t border-slate-200">
           <Button
-            onClick={handleSubmitAll}
+            onClick={handleSubmit}
             disabled={isSubmitting}
             size="lg"
-            className="px-12 py-6 text-lg font-semibold bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 transition-all duration-300 shadow-lg hover:shadow-xl"
+            className="px-8 py-6 text-lg font-semibold bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 transition-all duration-300 shadow-lg hover:shadow-xl"
           >
             {isSubmitting ? (
               <span className="flex items-center gap-2">
                 <Loader2 className="w-5 h-5 animate-spin" />
-                Submitting...
+                Creating Profile...
               </span>
             ) : (
-              "Complete Registration"
+              "Continue to Social Media"
             )}
           </Button>
         </div>
-
-        <SocialAccountsManager />
       </div>
     </div>
   )

@@ -5,8 +5,6 @@ import { useState, useEffect } from "react"
 import { X, Star, Trash2, Edit, Plus, AlertCircle, CheckCircle2, XCircle } from "lucide-react"
 import { useSocials } from "@/hooks/use-social"
 import { type CreateSocialAccountDto, Platform, type UpdateSocialAccountDto } from "@/types/social.types"
-import { useTalent } from "@/hooks/use-talent"
-import { useSelector } from "react-redux"
 import { SocialMediaIcon } from "./social-media-icon"
 import { getPlatformColor } from "@/lib/platform-colors"
 

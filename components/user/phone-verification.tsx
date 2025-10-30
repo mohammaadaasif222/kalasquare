@@ -20,10 +20,10 @@ interface PhoneVerificationProps {
   triggerButton?: React.ReactNode
 }
 
-export function PhoneVerification({ 
-  onVerified, 
+export function PhoneVerification({
+  onVerified,
   initialPhone = "",
-  triggerButton 
+  triggerButton
 }: PhoneVerificationProps) {
   const [open, setOpen] = useState(false)
   const [step, setStep] = useState<"input" | "otp">("input")
@@ -107,10 +107,10 @@ export function PhoneVerification({
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
         {triggerButton || (
-          <Button>
+          <p className="flex items-center">
             <Phone className="mr-2" size={16} />
-            Verify Phone
-          </Button>
+            <span className="mr-2">{initialPhone}</span><span className="underline cursor-pointer text-xs text-yellow-500">Verify</span>
+          </p>
         )}
       </DialogTrigger>
       <DialogContent className="sm:max-w-md">
@@ -120,7 +120,7 @@ export function PhoneVerification({
             Phone Verification
           </DialogTitle>
           <DialogDescription>
-            {step === "input" 
+            {step === "input"
               ? "Enter your phone number to receive a verification code"
               : "Enter the OTP sent to your phone"}
           </DialogDescription>
@@ -163,10 +163,10 @@ export function PhoneVerification({
               </div>
               {error && <p className="text-sm text-destructive">{error}</p>}
               <div className="flex gap-2">
-                <Button 
-                  variant="outline" 
-                  onClick={handleBack} 
-                  disabled={loading} 
+                <Button
+                  variant="outline"
+                  onClick={handleBack}
+                  disabled={loading}
                   className="flex-1"
                 >
                   Back
