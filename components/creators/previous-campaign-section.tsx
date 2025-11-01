@@ -70,9 +70,7 @@ export default function PreviousCampaignSection() {
           <h2 className="text-2xl font-bold text-foreground mb-1">Previous Campaigns</h2>
           <p className="text-sm text-muted-foreground">Successful brand collaborations and projects</p>
         </div>
-        <Button variant="ghost" className="text-destructive hover:text-destructive hover:bg-red-50">
-          View All
-        </Button>
+    
       </div>
 
       {/* Desktop View - Carousel */}
@@ -172,6 +170,9 @@ export default function PreviousCampaignSection() {
             </div>
           </div>
         ))}
+      </div>
+        <div className="flex items-center justify-end mb-6">
+        <button className="text-[var(--brand)] cursor-pointer font-semibold hover:text-[var(--brand)]/80 transition">View all</button>
       </div>
     </section>
   )

@@ -115,11 +115,12 @@ import { Card } from "../ui/card"
 import { useWorkSample } from "@/hooks/use-work"
 import { useTalent } from "@/hooks/use-talent"
 import { VideoSectionSkeleton } from "./skeleton-loader"
+import { useState } from "react"
 interface Props {
   talentProfileId: string
 }
 export default function VideoSection({ talentProfileId }: Props) {
-
+  const [count, setCount] = useState(3)
   const { workSamples, loading } = useWorkSample()
 
   const isImageUrl = (url: string) => /\.(jpeg|jpg|gif|png|webp)$/i.test(url)
@@ -140,16 +141,17 @@ export default function VideoSection({ talentProfileId }: Props) {
     }
   }
 
-  const filtered = workSamples?.filter((item) => item.type === "video").slice(0,3)
+  const filtered = workSamples?.filter((item) => item.type === "video").slice(0, count)
   if (!filtered || loading) {
     return <VideoSectionSkeleton />
   }
-
+  function handleViewAll() {
+    setCount(6)
+  }
   return (
     <section className="mb-12">
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-2xl font-bold text-gray-900">Videos</h2>
-        <button className="text-[var(--brand)] font-semibold hover:text-[var(--brand)]/80 transition">View all</button>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {filtered.map((sample) => (
@@ -210,6 +212,9 @@ export default function VideoSection({ talentProfileId }: Props) {
             )}
           </Card>
         ))}
+      </div>
+      <div className="flex items-center justify-end mb-6">
+        <button onClick={handleViewAll} className="text-[var(--brand)] cursor-pointer font-semibold hover:text-[var(--brand)]/80 transition">View all</button>
       </div>
     </section>
   )

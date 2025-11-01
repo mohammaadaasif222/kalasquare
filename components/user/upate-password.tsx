@@ -7,7 +7,7 @@ interface UpdatePasswordProps {
 }
 
 export default function UpdatePassword({ userId }: UpdatePasswordProps) {
-  const { updatePasw, isLoading, error, message } = useAuth();
+  const { updatePasw, loading:isLoading, error, message } = useAuth();
   
   const [isOpen, setIsOpen] = useState(false);
   const [formData, setFormData] = useState({

@@ -35,17 +35,16 @@ axiosInstance.interceptors.response.use(
 
       try {
         // Try to refresh token
-        const { data } = await axios.post('/auth/refresh');
-        Cookies.set('token', data.token);
-
+        // const { data } = await axios.post('/auth/refresh');
+        // Cookies.set('token', data.token);
         // Retry original request with new token
-        originalRequest.headers.Authorization = `Bearer ${data.token}`;
+        // originalRequest.headers.Authorization = `Bearer ${data.token}`;
         return axiosInstance(originalRequest);
       } catch (refreshError) {
         // If refresh fails, clear token and redirect to login
-        Cookies.remove('token');
-        window.localStorage.removeItem("user")
-        window.location.href = '/';
+        // Cookies.remove('token');
+        // window.localStorage.removeItem("user")
+        // window.location.href = '/';
         return Promise.reject(refreshError);
       }
     }

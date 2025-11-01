@@ -23,6 +23,7 @@ export const getProfile = async (userId: string): Promise<UserProfile> => {
   const { data } = await axios.get(`${API_ENDPOINTS.GET_PROFILE}/${userId}`);
   return data;
 };
+
 export const getMe = async (): Promise<UserProfile> => {
   const { data } = await axios.get(`${API_ENDPOINTS.GET_PROFILE}/me`);
   return data;

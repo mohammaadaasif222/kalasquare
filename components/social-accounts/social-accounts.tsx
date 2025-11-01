@@ -41,8 +41,6 @@ const SocialAccountsManager: React.FC<Props> = ({ talentProfileId }: Props) => {
     is_primary: false,
   })
 
-
-
   useEffect(() => {
     if (talentProfileId) {
       setFormData((prev) => ({

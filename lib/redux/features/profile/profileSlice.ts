@@ -18,6 +18,9 @@ const initialState: ProfileState = {
   error: null,
 };
 
+type FetchUserProfileArgs = {
+  userId: string;
+};
 // ✅ Create Profile
 export const createProfile = createAsyncThunk<UserProfile, CreateProfileData>(
   'profile/create',
@@ -44,7 +47,23 @@ export const fetchProfileByUserId = createAsyncThunk<UserProfile, string>(
   }
 );
 
-// ✅ Fetch Logged-in User Profile
+
+export const fetchUserProfileById = createAsyncThunk<
+  UserProfile,
+  FetchUserProfileArgs,
+  { rejectValue: string }
+>(
+  'profile/fetchProfile',
+  async ({ userId }, { rejectWithValue }) => {
+    try {
+      const result = await profileAPI.getProfile(userId);
+      console.log("action resu",result)
+      return result as UserProfile;
+    } catch (error: any) {
+      return rejectWithValue(error.response?.data?.message || 'Failed to fetch profile');
+    }
+  }
+);
 export const fetchProfile = createAsyncThunk<UserProfile>(
   'profile/fetchProfile',
   async (_, { rejectWithValue }) => {

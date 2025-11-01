@@ -93,7 +93,7 @@ export function EditableProfile({ profile, talent, userId }: EditableProfileProp
   return (
     <div className="w-full max-w-4xl mx-auto p-4">
       {/* View Mode */}
-        {/* {!isEditing && (
+        {!isEditing && (
           <Card className="border rounded-lg shadow-sm">
             <CardContent className="pt-8">
               <div className="flex flex-col md:flex-row gap-6 mb-8">
@@ -324,7 +324,7 @@ export function EditableProfile({ profile, talent, userId }: EditableProfileProp
               )}
             </CardContent>
           </Card>
-        )} */}
+        )}
 
       {isEditing && (
         <Card className="border rounded-lg shadow-sm">

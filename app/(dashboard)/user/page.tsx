@@ -17,6 +17,8 @@ import { EditableProfile } from "@/components/user/editable-profile"
 import Loader from "@/components/shared/Loader"
 import WorkSampleManager from "@/components/works/work-sample"
 import SocialAccountsManager from "@/components/social-accounts/social-accounts"
+import UpdatePassword from "@/components/user/upate-password"
+import UserSettingsPage from "@/components/user/settings"
 
 export default function Dashboard() {
     const { activeNav, setActiveNav } = useUserNav()
@@ -31,10 +33,9 @@ export default function Dashboard() {
         }
     }, [auth?.id])
 
-    if (!talent || !profile) {
+    if (!talent || !profile || !auth) {
         return <Loader />
     }
-
     return (
         <div >
             {activeNav.trim() === "edit-profile" && (
@@ -68,6 +69,9 @@ export default function Dashboard() {
             )}
             {activeNav.trim() === "social-accounts" && (
                 <SocialAccountsManager talentProfileId={talent?.id} />
+            )}
+            {activeNav.trim() === "settings" && (
+                <UserSettingsPage />
             )}
         </div>
 

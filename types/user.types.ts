@@ -11,6 +11,7 @@ export interface AuthState {
   isLoading: boolean;
   error: string | null;
   message: string | null
+  loading:boolean
 }
 
 export interface LoginCredentials {

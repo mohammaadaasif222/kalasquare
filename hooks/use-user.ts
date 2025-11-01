@@ -138,7 +138,7 @@ export const useTalentList = (
   const { publicTalents, talentsPagination, isLoading, error } = useSelector(
     (state: RootState) => state.users
   );
- 
+
   const fetchTalents = useCallback(() => {
     return dispatch(getPublicTalents(params || {}));
   }, [dispatch, params]);
@@ -332,14 +332,16 @@ export const useCurrentUser = () => {
 // Hook for auth operations
 export const useAuth = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const { isLoading, message, error } = useSelector((state: RootState) => state.auth);
+  const { isLoading, loading, message, error, user } = useSelector((state: RootState) => state.auth);
 
-  const updatePasw = useCallback((id: string, password: string) => {
-    return dispatch(updatePassword({ id, password }));
+  const updatePasw = useCallback((id: string, password: string, currentPas?: string) => {
+    return dispatch(updatePassword({ id, password, currentPas }));
   }, [dispatch]);
 
   return {
     isLoading,
+    loading,
+    user,
     error,
     message,
     updatePasw

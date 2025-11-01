@@ -20,9 +20,6 @@ export const useProfile = () => {
         (state: RootState) => state.profile
     );
 
-    useEffect(() => {
-        handleFetchMe()
-    }, [dispatch])
 
     const handleCreateProfile = useCallback(
         async (data: CreateProfileData) => {
@@ -34,18 +31,26 @@ export const useProfile = () => {
     const handleFetchProfile = useCallback(
         async (userId: string) => {
             const result = await dispatch(fetchTalentByUserId(userId));
-            return result;
-        },
-        [dispatch]
-    );
-    const handleFetchMe = useCallback(
-        async () => {
-            const result = await dispatch(fetchProfile());
+            console.log(result)
             return result;
         },
         [dispatch]
     );
 
+    const handleFetchMe = useCallback(
+        async (userId: string) => {
+            const result = await dispatch(fetchProfileByUserId(userId));
+            return result;
+        },
+        [dispatch]
+    );
+    const fetchUserById = useCallback(
+        async (userId: string) => {
+            const result = await dispatch(fetchProfileByUserId(userId));
+            return result;
+        },
+        [dispatch]
+    );
     const handleUpdateProfile = useCallback(
         async (userId: string, data: UpdateProfileData) => {
             const result = await dispatch(updateProfile({ userId, data }));
@@ -88,6 +93,7 @@ export const useProfile = () => {
         profiles,
         loading,
         error,
+        fetchUserById: fetchUserById,
         createProfile: handleCreateProfile,
         fetchProfile: handleFetchProfile,
         updateProfile: handleUpdateProfile,

@@ -46,7 +46,7 @@ export default function CreatorGrid({ creators, onTalkToCreator, onCreatorDouble
           {/* Content */}
           <div className="p-2 space-y-2">
             <Link href={`/top-creators/${creator.id}`}>
-              <h3 className="font-semibold text-foreground text-sm line-clamp-1">{creator.name}</h3>
+              <h3 className="font-semibold text-foreground hover:underline hover:text-blue-500 text-sm line-clamp-1">{creator.name}</h3>
               <p className="text-xs text-muted-foreground">{creator.followers} Followers</p>
             </Link>
 

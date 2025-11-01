@@ -58,9 +58,7 @@ export default function AwardSection() {
           </div>
           <p className="text-sm text-muted-foreground">Achievements and accolades</p>
         </div>
-        <Button variant="ghost" className="text-destructive hover:text-destructive hover:bg-red-50">
-          View All
-        </Button>
+
       </div>
 
       {/* Desktop View - Grid */}
@@ -155,6 +153,10 @@ export default function AwardSection() {
             </div>
           </div>
         ))}
+      </div>
+
+      <div className="flex items-center justify-end mb-6 mt-4">
+        <button className="text-[var(--brand)] cursor-pointer font-semibold hover:text-[var(--brand)]/80 transition">View all</button>
       </div>
     </section>
   )

@@ -8,7 +8,7 @@ interface ReviewCardProps {
 
 export function ReviewCard({ review }: ReviewCardProps) {
   return (
-    <div className="bg-gradient-to-br from-white to-gray-50 border border-gray-200 rounded-xl p-4 hover:shadow-lg hover:border-gray-300 transition-all duration-300 group">
+    <div className="p-4  hover:border-gray-300 transition-all duration-300 group">
       {/* Header */}
       <div className="flex items-start justify-between mb-3">
         <div className="flex items-center gap-3">

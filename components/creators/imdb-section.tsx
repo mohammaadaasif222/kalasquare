@@ -70,12 +70,10 @@ export default function IMDBSection() {
           <h2 className="text-2xl font-bold text-foreground mb-1">IMDB</h2>
           <p className="text-sm text-muted-foreground">Featured filmography and ratings</p>
         </div>
-        <Button variant="ghost" className="text-destructive hover:text-destructive hover:bg-red-50">
-          View All
-        </Button>
+
       </div>
 
-    
+
       <div className="hidden md:block relative">
         <div className="absolute left-0 top-1/2 -translate-y-1/2 z-10">
           <Button
@@ -113,9 +111,8 @@ export default function IMDBSection() {
                   {[...Array(5)].map((_, i) => (
                     <Star
                       key={i}
-                      className={`w-3 h-3 ${
-                        i < Math.floor(movie.rating / 2) ? "fill-yellow-400 text-yellow-400" : "text-gray-300"
-                      }`}
+                      className={`w-3 h-3 ${i < Math.floor(movie.rating / 2) ? "fill-yellow-400 text-yellow-400" : "text-gray-300"
+                        }`}
                     />
                   ))}
                 </div>
@@ -138,7 +135,7 @@ export default function IMDBSection() {
         </div>
       </div>
 
-     
+
       <div className="md:hidden grid grid-cols-2 gap-3">
         {movies.slice(0, 4).map((movie) => (
           <div key={movie.id} className="group cursor-pointer">
@@ -156,6 +153,9 @@ export default function IMDBSection() {
             <p className="text-xs text-muted-foreground">{movie.year}</p>
           </div>
         ))}
+      </div>
+      <div className="flex items-center justify-end mb-6">
+        <button className="text-[var(--brand)] cursor-pointer font-semibold hover:text-[var(--brand)]/80 transition">View all</button>
       </div>
     </section>
   )
