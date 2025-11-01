@@ -98,7 +98,7 @@ export default function TalentListPage() {
           {isLoading ? (
             <div className="p-6 space-y-4">
               {[...Array(5)].map((_, i) => (
-                <Skeleton key={i} className="h-16 w-full" />
+                <Skeleton key={i} className="h-16 w-full  bg-gray-100" />
               ))}
             </div>
           ) : adminUserList && adminUserList.length > 0 ? (
