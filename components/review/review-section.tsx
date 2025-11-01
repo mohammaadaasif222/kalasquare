@@ -4,15 +4,7 @@
 // import { ReviewList } from "./review-list"
 // import { ReviewForm } from "./review-form"
 
-// export interface Review {
-//   id: string
-//   author: string
-//   rating: number
-//   title: string
-//   content: string
-//   date: string
-//   avatar?: string
-// }
+
 
 // export function ReviewSection() {
 //   const [reviews, setReviews] = useState<Review[]>([
@@ -105,7 +97,15 @@
 import { useEffect, useState, useRef, useCallback } from "react"
 import ReviewForm from "@/components/review/review-form"
 import ReviewList from "@/components/review/review-list"
-
+export interface Review {
+  id: string
+  author: string
+  rating: number
+  title: string
+  content: string
+  date: string
+  avatar?: string
+}
 const initialReviews = [
   {
     id: 1,
